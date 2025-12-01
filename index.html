@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna Edu | Wsparcie, które rozumie Twoją codzienność</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Quicksand (Przyjazna, obła czcionka) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Ikony Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                    },
+                    colors: {
+                        luna: {
+                            50: '#f0fdfa', // Bardzo jasna mięta (tło)
+                            100: '#ccfbf1',
+                            500: '#14b8a6', // Główny turkus
+                            600: '#0d9488', // Ciemniejszy turkus (przyciski)
+                            800: '#115e59', // Tekst nagłówków
+                            900: '#134e4a',
+                        },
+                        sand: {
+                            50: '#fffbeb', // Ciepłe tło sekcji
+                            100: '#fef3c7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            scroll-behavior: smooth;
+        }
+        .blob {
+            position: absolute;
+            filter: blur(40px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -20px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-luna-50 text-slate-700 font-sans selection:bg-luna-200">
+
+    <!-- Nawigacja -->
+    <nav class="fixed w-full z-50 transition-all duration-300 glass-card" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 bg-gradient-to-br from-luna-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                        L
+                    </div>
+                    <span class="font-bold text-2xl text-luna-900 tracking-tight">Luna<span class="text-luna-500">Edu</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#historia" class="hover:text-luna-600 px-3 py-2 rounded-md text-base font-medium transition-colors">Moja Historia</a>
+                        <a href="#ekosystem" class="hover:text-luna-600 px-3 py-2 rounded-md text-base font-medium transition-colors">Ekosystem</a>
+                        <a href="#misja" class="hover:text-luna-600 px-3 py-2 rounded-md text-base font-medium transition-colors">Dla Szkół i Fundacji</a>
+                        <a href="#kontakt" class="bg-luna-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-luna-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Dołącz do nas</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-luna-800 hover:text-white hover:bg-luna-500 focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-white border-t" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#historia" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-luna-50 text-luna-900">Moja Historia</a>
+                <a href="#ekosystem" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-luna-50 text-luna-900">Ekosystem</a>
+                <a href="#kontakt" class="block px-3 py-2 rounded-md text-base font-bold text-luna-600">Dołącz</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Tło dekoracyjne -->
+        <div class="blob bg-blue-200 w-96 h-96 rounded-full top-0 left-0"></div>
+        <div class="blob bg-luna-200 w-80 h-80 rounded-full bottom-0 right-0 animation-delay-2000"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
+                    <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-sand-100 text-amber-700 font-semibold text-sm mb-6 border border-amber-200">
+                        <span class="mr-2">👋</span> Od rodzica dla rodziców
+                    </div>
+                    <h1 class="text-4xl tracking-tight font-extrabold text-slate-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                        Terapia to nie tylko<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-luna-600 to-blue-600">gabinet lekarza.</span>
+                    </h1>
+                    <p class="mt-6 text-lg text-slate-600 leading-relaxed">
+                        NFZ daje za mało godzin. Dojazdy zjadają Twój czas. Prywatne wizyty drenują portfel.<br><br>
+                        <strong>Luna Edu</strong> to Twój domowy asystent, który wypełnia lukę między wizytami u specjalisty. Bezpiecznie, spokojnie, w Twoim tempie.
+                    </p>
+                    <div class="mt-10 sm:flex sm:justify-center lg:justify-start gap-4">
+                        <a href="#ekosystem" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-bold rounded-full text-white bg-luna-600 hover:bg-luna-700 md:py-4 md:text-lg md:px-10 shadow-lg hover:shadow-xl transition-all">
+                            Poznaj Ekosystem
+                        </a>
+                        <a href="#historia" class="w-full flex items-center justify-center px-8 py-3 border-2 border-luna-200 text-base font-bold rounded-full text-luna-700 bg-white hover:bg-luna-50 md:py-4 md:text-lg md:px-10 transition-all">
+                            Moja Historia
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+                    <div class="relative mx-auto w-full rounded-2xl shadow-2xl lg:max-w-md overflow-hidden transform rotate-2 hover:rotate-0 transition-all duration-500">
+                        <img src="https://images.unsplash.com/photo-1544776193-adeb44d116bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Rodzic z dzieckiem przy tablecie" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-luna-900/80 to-transparent flex items-end p-6">
+                            <p class="text-white font-medium">"Spokój w domu to najlepsza terapia."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sekcja: Historia (Authenticity) -->
+    <section id="historia" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-luna-900 mb-6">Nie jestem korporacją.<br>Jestem Piotrem.</h2>
+                    <div class="prose text-slate-600 text-lg space-y-4">
+                        <p>
+                            Jestem tatą 7-letniego Dominika. Znam tę trasę na pamięć: szkoła, rehabilitacja, logopeda, basen. Wiem, ile kosztuje paliwo i ile energii kosztuje walka o każdą godzinę terapii z orzeczenia.
+                        </p>
+                        <p>
+                            Kiedy życie rzuciło mi kłody pod nogi – problemy zdrowotne, utrata płynności finansowej – zrozumiałem jedno: <strong>nie mogę czekać na pomoc. Muszę ją zbudować.</strong>
+                        </p>
+                        <p>
+                            Luna Edu powstała w nocy, między wizytami lekarskimi a pracą. To nie jest "startup technologiczny". To moje narzędzie przetrwania i rozwoju dla mojego syna. A teraz chcę się nim podzielić z Tobą.
+                        </p>
+                        <div class="mt-6 flex items-center gap-4">
+                            <div class="h-px bg-slate-200 flex-1"></div>
+                            <span class="font-handwriting text-luna-600 font-bold text-xl" style="font-family: cursive;">Piotr & Dominik</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-10 lg:mt-0 grid grid-cols-2 gap-4">
+                    <div class="bg-sand-50 p-6 rounded-2xl shadow-sm border border-sand-100">
+                        <i data-lucide="clock" class="w-8 h-8 text-amber-500 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Oszczędność Czasu</h3>
+                        <p class="text-sm text-slate-600">Mniej dojazdów. Ćwiczysz w domu, kiedy masz siłę i chęci.</p>
+                    </div>
+                    <div class="bg-luna-50 p-6 rounded-2xl shadow-sm border border-luna-100">
+                        <i data-lucide="heart" class="w-8 h-8 text-luna-500 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Bezpieczna Przystań</h3>
+                        <p class="text-sm text-slate-600">Zero presji. Twoje dziecko rozwija się w swoim tempie, bez ocen.</p>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm border border-blue-100 col-span-2">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-blue-500 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Bezpieczna Technologia</h3>
+                        <p class="text-sm text-slate-600">Nasze AI (Ghost Writer) ma wbudowane hamulce bezpieczeństwa. Dziecko nie zepsuje gry, a system tłumaczy mu świat cyfrowy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sekcja: Ekosystem (Produkty) -->
+    <section id="ekosystem" class="py-20 bg-luna-50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-luna-900">Ekosystem, który rośnie z dzieckiem</h2>
+                <p class="mt-4 text-xl text-slate-600">Od malucha do młodego twórcy.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Karta 1: Emocje (Fundament) -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group">
+                    <div class="h-48 bg-amber-100 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-amber-200 to-orange-100 opacity-50"></div>
+                        <i data-lucide="palette" class="w-16 h-16 text-amber-600 relative z-10 group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div class="p-8">
+                        <div class="text-xs font-bold text-amber-600 uppercase tracking-wide mb-2">Wiek 2-5 lat + Rodzice</div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-3">Zrozumieć Emocje</h3>
+                        <p class="text-slate-600 mb-6">
+                            Analizujemy rysunki Twojego dziecka, aby pomóc Ci zrozumieć jego świat wewnętrzny. Otrzymasz gotowe scenariusze zabaw budujących więź.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Analiza rysunków</li>
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Poradnik "Dominik Tworzy"</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Karta 2: Luna Mini Coach (Serce) -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl ring-4 ring-luna-200 transform scale-105 z-10">
+                    <div class="bg-luna-600 text-white text-center py-1 text-sm font-bold uppercase tracking-wider">Najczęściej wybierane</div>
+                    <div class="h-48 bg-luna-100 flex items-center justify-center relative overflow-hidden">
+                        <i data-lucide="sparkles" class="w-16 h-16 text-luna-600 relative z-10 animate-pulse"></i>
+                    </div>
+                    <div class="p-8">
+                        <div class="text-xs font-bold text-luna-600 uppercase tracking-wide mb-2">Wiek 3-7 lat</div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-3">Luna Mini Coach</h3>
+                        <p class="text-slate-600 mb-6">
+                            Wsparcie rozwoju sensorycznego w domu. Luna to wirtualna przyjaciółka, która zamienia ćwiczenia (wzrok, słuch, motoryka) w magiczną przygodę.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Terapia ręki na ekranie</li>
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Ćwiczenia słuchowe</li>
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Raporty dla rodzica</li>
+                        </ul>
+                        <button class="w-full bg-luna-600 text-white font-bold py-3 rounded-xl hover:bg-luna-700 transition-colors">
+                            Zobacz Demo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Karta 3: Ghost Writer (Przyszłość) -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group">
+                    <div class="h-48 bg-slate-800 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                        <i data-lucide="bot" class="w-16 h-16 text-luna-400 relative z-10 group-hover:rotate-12 transition-transform"></i>
+                    </div>
+                    <div class="p-8">
+                        <div class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">Wiek 7-14 lat</div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-3">Ghost Writer</h3>
+                        <p class="text-slate-600 mb-6">
+                            Twoje dziecko kocha Roblox? Zamień granie w tworzenie. Nasz bezpieczny asystent AI pozwala budować światy głosem i uczy logiki programowania.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Bezpieczna Piaskownica</li>
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Sterowanie Głosem (PL)</li>
+                            <li class="flex items-center text-sm text-slate-500"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i> Edukacyjny Feedback</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sekcja: Partnerzy i Zaufanie (Misja) -->
+    <section id="misja" class="py-20 bg-white border-t border-slate-100">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-luna-900 mb-8">Współpraca dla dobra dzieci</h2>
+            <p class="text-lg text-slate-600 mb-10">
+                Szukam partnerów – szkół, fundacji i poradni – którzy chcą przetestować nasze narzędzia bezpłatnie w ramach programów grantowych (PFRON, Laboratoria Przyszłości). Razem możemy dać dzieciom więcej szans.
+            </p>
+            <div class="flex flex-wrap justify-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <!-- Tu będą loga fundacji w przyszłości -->
+                <div class="flex items-center gap-2 font-bold text-slate-400 text-xl"><i data-lucide="building-2"></i> Twoja Szkoła</div>
+                <div class="flex items-center gap-2 font-bold text-slate-400 text-xl"><i data-lucide="heart-handshake"></i> Fundacja</div>
+                <div class="flex items-center gap-2 font-bold text-slate-400 text-xl"><i data-lucide="stethoscope"></i> Poradnia PP</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-luna-900 text-white py-12" id="kontakt">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 bg-luna-500 rounded-full flex items-center justify-center font-bold text-sm">L</div>
+                    <span class="font-bold text-xl">LunaEdu</span>
+                </div>
+                <p class="text-luna-200 text-sm max-w-xs">
+                    Technologia z sercem. Tworzona w Olsztynie przez tatę dla syna i wszystkich dzieci, które potrzebują wsparcia.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4 text-luna-100">Kontakt</h4>
+                <ul class="space-y-2 text-luna-300 text-sm">
+                    <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> kontakt@lunaedu.pl</li>
+                    <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Olsztyn, Polska</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4 text-luna-100">Dla Inwestorów</h4>
+                <p class="text-luna-300 text-sm mb-4">
+                    Projekt gotowy do grantów PFRON i ścieżki SMART.
+                </p>
+                <a href="mailto:kontakt@lunaedu.pl" class="text-luna-400 hover:text-white underline text-sm">Poproś o Pitch Deck</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-luna-800 text-center text-luna-400 text-xs">
+            &copy; 2025 Luna Edu. Wszystkie prawa zastrzeżone. Projekt realizowany z pasji.
+        </div>
+    </footer>
+
+    <script>
+        // Inicjalizacja ikon
+        lucide.createIcons();
+
+        // Prosty efekt navbaru przy przewijaniu
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.style.background = 'rgba(255, 255, 255, 0.7)';
+            }
+        });
+    </script>
+</body>
+</html>
