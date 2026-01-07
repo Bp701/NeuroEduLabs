@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copernix OS - Edge AI dla Wyjątkowych Umysłów</title>
+    <title>NeuroEduLabs - Technologia dla Wyjątkowych Umysłów</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,22 +25,6 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
-        .audio-wave {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            height: 20px;
-        }
-        .audio-bar {
-            width: 3px;
-            height: 100%;
-            background: #6366f1;
-            animation: wave 1s ease-in-out infinite;
-        }
-        @keyframes wave {
-            0%, 100% { height: 20%; }
-            50% { height: 100%; }
-        }
         html { scroll-behavior: smooth; }
     </style>
 </head>
@@ -54,40 +38,46 @@
             
             <div class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-300">
                 <a href="#misja" class="hover:text-white transition">Misja</a>
-                <a href="#narzedzia" class="hover:text-white transition text-blue-400">System</a>
+                <a href="#narzedzia" class="hover:text-white transition text-blue-400">Narzędzia</a>
                 <a href="#scenariusze" class="hover:text-white transition text-emerald-400">Dla Szkół</a>
-                <a href="#materialy" class="hover:text-white transition text-purple-400">Biblioteka Audio</a>
+                <a href="#materialy" class="hover:text-white transition text-purple-400">Materiały</a>
                 <a href="#zespol" class="hover:text-white transition">Zespół</a>
                 
-                <a href="mailto:piotr-lunaminicoach@proton.me" class="flex items-center gap-2 px-4 py-2 bg-white text-blue-900 rounded-full text-xs font-bold hover:bg-blue-50 transition shadow-lg">
+                <a href="mailto:piotr-lunaminicoach@proton.me" class="flex items-center gap-2 px-4 py-2 bg-white text-blue-900 rounded-full text-xs font-bold hover:bg-blue-50 transition shadow-lg border-2 border-transparent hover:border-blue-200">
                     <i class="fa-solid fa-envelope"></i> Napisz do nas
                 </a>
+            </div>
+            
+            <div class="md:hidden">
+                 <a href="mailto:piotr-lunaminicoach@proton.me" class="text-white text-xl"><i class="fa-solid fa-envelope"></i></a>
             </div>
         </div>
     </nav>
 
     <header id="misja" class="hero-bg text-white pt-32 pb-24 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-blue-600/10 blur-3xl rounded-full pointer-events-none"></div>
+
         <div class="container mx-auto px-6 relative z-10">
             <div class="max-w-4xl">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 border border-blue-800 text-blue-300 text-xs font-bold tracking-wider uppercase mb-8">
                     <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    Sovereign AI • TRL 6 • Edge Computing
+                    Od rodzica dla rodziców
                 </div>
                 <h1 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-                    Copernix OS: <br>
-                    <span class="gradient-text">Cyfrowy Schron</span> dla rozwoju.
+                    Budujemy mosty <br>
+                    dla <span class="gradient-text">wyjątkowych umysłów</span>.
                 </h1>
                 
                 <p class="text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl">
-                    Jako rodzice nie mogliśmy czekać, więc zbudowaliśmy suwerenny system operacyjny klasy <strong>Edge AI</strong>. Copernix OS wspiera dzieci ze specjalnymi potrzebami edukacyjnymi (SPE) poprzez bezpieczną, lokalną technologię, która chroni prywatność i uczy sprawstwa w świecie 3D.
+                    Jestem tatą 7‑letniego Dominika z niepełnosprawnością ruchową i trudnościami w przetwarzaniu bodźców sensorycznych. Nie mogłem czekać na idealne wsparcie, więc zacząłem je budować. Tworzymy ekosystem AI wspierający dzieci ze specjalnymi potrzebami edukacyjnymi (SPE) – szczególnie z problemami sensorycznymi i koncentracją – w domu i w szkole.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4">
                     <a href="#narzedzia" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition text-center flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20">
                         <i class="fa-solid fa-rocket"></i> Zobacz Narzędzia
                     </a>
-                    <a href="#materialy" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg font-bold transition text-center">
-                        Biblioteka Audio
+                    <a href="#ekosystem" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg font-bold transition text-center">
+                        Poznaj Ekosystem
                     </a>
                 </div>
             </div>
@@ -97,9 +87,9 @@
     <section id="narzedzia" class="py-20 bg-slate-100 border-b border-slate-200">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Jeden System, Dwie Potęgi</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Jeden Ekosystem, Dwa Wymiary</h2>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    Dostosowujemy technologię do etapu rozwoju dziecka. Od lekkiej regulacji emocji po zaawansowane projektowanie światów 3D.
+                    Dostosowujemy technologię do etapu rozwoju dziecka. Od prostych bodźców sensorycznych po zaawansowaną grywalizację szkolną.
                 </p>
             </div>
 
@@ -107,184 +97,201 @@
                 
                 <div class="bg-white rounded-2xl p-8 shadow-xl border-t-8 border-emerald-500 transform transition hover:-translate-y-2 duration-300">
                     <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-2xl font-bold text-slate-900">Lunaminicouch</h3>
-                        <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">Wersja EDU / LITE</span>
+                        <h3 class="text-2xl font-bold text-slate-900">Luna Junior (V1)</h3>
+                        <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Przedszkole (3-6 lat)</span>
                     </div>
                     <p class="text-slate-600 mb-6 min-h-[80px]">
-                        Przyjazny dzieciom panel wyboru ćwiczeń sensorycznych i sesji regulacyjnych (3-5 min). Idealny do pracy w klasie i wyciszania po przerwie.
+                        Interfejs "Audio-First". Luna mówi do dziecka. Duże obrazki, brak tekstu, proste stymulacje sensoryczne. Idealna do wczesnego wspomagania rozwoju.
                     </p>
                     <ul class="space-y-3 mb-8">
-                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-emerald-500 mr-3"></i> Niskie wymagania sprzętowe</li>
-                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-emerald-500 mr-3"></i> Interfejs Audio-First</li>
+                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-emerald-500 mr-3"></i> Sterowanie głosem i obrazem</li>
+                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-emerald-500 mr-3"></i> Zero karania, tylko nagrody</li>
                     </ul>
-                    <a href="https://lunaminicoach-v2.onrender.com/" target="_blank" class="block w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-center rounded-xl transition shadow-lg">
-                        Uruchom Panel EDU
+                    <a href="https://luna-minicoach-bp701.onrender.com/" target="_blank" class="block w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-center rounded-xl transition shadow-lg shadow-emerald-200">
+                        <i class="fa-solid fa-play mr-2"></i> Uruchom Demo V1
                     </a>
                 </div>
 
                 <div class="bg-white rounded-2xl p-8 shadow-xl border-t-8 border-blue-600 transform transition hover:-translate-y-2 duration-300">
                     <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-2xl font-bold text-slate-900">Copernix Architect</h3>
-                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Wersja PRO / EDGE</span>
+                        <h3 class="text-2xl font-bold text-slate-900">Luna Mini Coach (V2)</h3>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Szkoła (6-12 lat)</span>
                     </div>
                     <p class="text-slate-600 mb-6 min-h-[80px]">
-                        Twój Głos Tworzy Światy. Bezpieczna nauka logiki i kodowania w Roblox bez wysyłania danych do internetu (Local LLM / Ollama).
+                        Zaawansowana grywalizacja. Misje ratunkowe (np. "Start Rakiety"), punkty i wyzwania. Pomaga przetrwać w hałasie szkolnym i uczy samoregulacji.
                     </p>
                     <ul class="space-y-3 mb-8">
-                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-blue-500 mr-3"></i> Technologia Stealth Learning</li>
-                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-blue-500 mr-3"></i> 100% Prywatności</li>
+                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-blue-500 mr-3"></i> Misje ruchowe i oddechowe</li>
+                        <li class="flex items-center text-slate-700 text-sm"><i class="fa-solid fa-check text-blue-500 mr-3"></i> System punktów i nagród</li>
                     </ul>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
-                        <p class="text-[10px] uppercase font-bold text-slate-500 mb-1">Hardware Baseline:</p>
-                        <p class="text-[10px] text-slate-600 leading-tight">Windows 10/11 • GPU NVIDIA RTX 3060+ • RAM 16GB</p>
-                    </div>
+                    <a href="https://lunaminicoach-v2.onrender.com/" target="_blank" class="block w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-center rounded-xl transition shadow-lg shadow-blue-200">
+                        <i class="fa-solid fa-gamepad mr-2"></i> Uruchom Demo V2
+                    </a>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <section id="materialy" class="py-20 bg-white">
+    <section id="impact" class="py-16 bg-blue-900 text-white border-t border-blue-800">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-12">Dlaczego to robimy? Dane nie kłamią.</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-6 border border-blue-700 rounded-2xl bg-blue-900/50">
+                    <div class="text-5xl font-bold text-blue-400 mb-2">181,6 tys.</div>
+                    <p class="text-blue-100 font-medium">Uczniów z orzeczeniami SPE w Polsce</p>
+                    <p class="text-xs text-blue-300 mt-2 opacity-70">Dane GUS (2024)</p>
+                </div>
+                <div class="p-6 border border-blue-700 rounded-2xl bg-blue-900/50">
+                    <div class="text-5xl font-bold text-emerald-400 mb-2">↑ 15,9 tys.</div>
+                    <p class="text-blue-100 font-medium">Wzrost liczby orzeczeń rok do roku</p>
+                    <p class="text-xs text-blue-300 mt-2 opacity-70">Raport MEN (2023/24)</p>
+                </div>
+                <div class="p-6 border border-blue-700 rounded-2xl bg-blue-900/50">
+                    <div class="text-5xl font-bold text-purple-400 mb-2">5-13%</div>
+                    <p class="text-blue-100 font-medium">Dzieci z trudnościami sensorycznymi</p>
+                    <p class="text-xs text-blue-300 mt-2 opacity-70">Badania neurorozwojowe</p>
+                </div>
+            </div>
+            <p class="text-blue-300 mt-8 text-sm opacity-80">
+                Luna Mini Coach wspiera <strong>wszystkie dzieci</strong> z trudnościami koncentracyjnymi i sensorycznymi – niezależnie od diagnozy.
+            </p>
+        </div>
+    </section>
+
+    <section id="ekosystem" class="py-24 bg-slate-50">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
-                <span class="text-indigo-600 font-bold text-xs tracking-widest uppercase mb-2 block">Audio-Regulacja Behawioralna</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Biblioteka Scenariuszy Wyciszających (v1.0)</h2>
-                <p class="text-slate-500 max-w-2xl mx-auto italic">
-                    "Zamiast uciszać dziecko, dajemy mu narzędzie, które pomaga mu samemu odnaleźć spokój."
-                </p>
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Trzy Filary Wsparcia</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Kompleksowe podejście łączące emocje, edukację i technologię.</p>
             </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                <div class="bg-rose-50 border border-rose-100 p-6 rounded-3xl group transition hover:shadow-lg">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-3xl">🛡️</span>
-                        <div class="audio-wave opacity-0 group-hover:opacity-100 transition"><div class="audio-bar"></div><div class="audio-bar" style="animation-delay: 0.2s"></div><div class="audio-bar" style="animation-delay: 0.4s"></div></div>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1 uppercase text-xs">Wirus Złości</h3>
-                    <p class="text-[10px] text-slate-500 mb-4 leading-relaxed">Metoda Żółwia i "Strażnik Uczuć". Redukcja napięcia w 4 minuty.</p>
-                    <button class="w-full py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold text-[10px] transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-play"></i> Odtwórz Protokół
-                    </button>
-                </div>
-
-                <div class="bg-amber-50 border border-amber-100 p-6 rounded-3xl group transition hover:shadow-lg">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-3xl">⏳</span>
-                        <div class="audio-wave opacity-0 group-hover:opacity-100 transition"><div class="audio-bar"></div><div class="audio-bar" style="animation-delay: 0.2s"></div><div class="audio-bar" style="animation-delay: 0.4s"></div></div>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1 uppercase text-xs">Wyścig Niecierpliwości</h3>
-                    <p class="text-[10px] text-slate-500 mb-4 leading-relaxed">Nauka odroczonej gratyfikacji. Cierpliwość w 5 minut.</p>
-                    <button class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-[10px] transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-play"></i> Odtwórz Protokół
-                    </button>
-                </div>
-
-                <div class="bg-sky-50 border border-sky-100 p-6 rounded-3xl group transition hover:shadow-lg">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-3xl">☁️</span>
-                        <div class="audio-wave opacity-0 group-hover:opacity-100 transition"><div class="audio-bar"></div><div class="audio-bar" style="animation-delay: 0.2s"></div><div class="audio-bar" style="animation-delay: 0.4s"></div></div>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1 uppercase text-xs">Chmura Smutku</h3>
-                    <p class="text-[10px] text-slate-500 mb-4 leading-relaxed">Strażnik Wrażliwości. Budowanie odporności psychicznej.</p>
-                    <button class="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-bold text-[10px] transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-play"></i> Odtwórz Protokół
-                    </button>
-                </div>
-
-                <div class="bg-purple-50 border border-purple-100 p-6 rounded-3xl group transition hover:shadow-lg">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-3xl">⚡</span>
-                        <div class="audio-wave opacity-0 group-hover:opacity-100 transition"><div class="audio-bar"></div><div class="audio-bar" style="animation-delay: 0.2s"></div><div class="audio-bar" style="animation-delay: 0.4s"></div></div>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1 uppercase text-xs">Moc Inności</h3>
-                    <p class="text-[10px] text-slate-500 mb-4 leading-relaxed">Supermoce Robo-Ninja. Akceptacja i pewność siebie.</p>
-                    <button class="w-full py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-xl font-bold text-[10px] transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-play"></i> Odtwórz Protokół
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto border-t border-slate-100 pt-16">
-                <div class="flex items-center gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-200 text-left card-hover transition">
-                    <div class="text-4xl">🌱</div>
-                    <div>
-                        <h4 class="font-bold text-slate-900">Metodyka EcoParenting (3xM)</h4>
-                        <p class="text-xs text-slate-500 mb-3">Przewodnik świadomego ograniczania bodźców.</p>
-                        <a href="https://drive.google.com/file/d/1Xefplz1ZGy327y_dlhoGRmBH2-NhIitg/view?usp=drivesdk" target="_blank" class="text-indigo-600 font-bold text-xs hover:underline flex items-center gap-2">
-                            <i class="fa-solid fa-book-open"></i> Otwórz Przewodnik
-                        </a>
-                    </div>
-                </div>
-                <div class="flex items-center gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-200 text-left card-hover transition">
-                    <div class="text-4xl">🎨</div>
-                    <div>
-                        <h4 class="font-bold text-slate-900">Artbook "Dominik Tworzy"</h4>
-                        <p class="text-xs text-slate-500 mb-3">Karty pracy i dowody postępów grafomotorycznych.</p>
-                        <a href="https://drive.google.com/file/d/1mmjYH425UNE34Axf1gTytzYGSHuF2p5z/view?usp=drivesdk" target="_blank" class="text-indigo-600 font-bold text-xs hover:underline flex items-center gap-2">
-                            <i class="fa-solid fa-file-pdf"></i> Pobierz Karty Pracy
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="zespol" class="py-20 bg-white border-t border-slate-100">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-12">Zespół Założycielski</h2>
             
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
-                <div class="p-6">
-                    <div class="w-24 h-24 bg-slate-200 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl shadow-inner">👩‍💼</div>
-                    <h3 class="font-bold text-xl text-slate-900">Marta Dąbrowska</h3>
-                    <p class="text-indigo-600 text-sm font-bold mb-2 uppercase">CEO & Head of Education</p>
-                    <p class="text-slate-500 text-sm leading-relaxed">Strategia rozwoju, metodyka i koordynacja placówek partnerskich. Certyfikowany Opiekun Dziecięcy (280h).</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 card-hover transition duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-green-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">DOSTĘPNE ONLINE</div>
+                    <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-600 text-2xl group-hover:scale-110 transition">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Luna's MiniCoach</h3>
+                    <p class="text-slate-600 mb-6 leading-relaxed text-sm">
+                        Interaktywna asystentka do ćwiczeń integracji sensorycznej. Wykorzystuje grywalizację.
+                    </p>
+                    <a href="https://lunaminicoach-v2.onrender.com" target="_blank" class="text-blue-600 font-bold hover:text-blue-800 flex items-center gap-2 text-sm group-hover:translate-x-1 transition">
+                        Otwórz platformę <i class="fa-solid fa-arrow-right"></i>
+                    </a>
                 </div>
 
-                <div class="p-6">
-                    <div class="w-24 h-24 bg-slate-200 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl shadow-inner">👨‍💻</div>
-                    <h3 class="font-bold text-xl text-slate-900">Piotr Brodziński</h3>
-                    <p class="text-indigo-600 text-sm font-bold mb-2 uppercase">CTO & Lead Architect</p>
-                    <p class="text-slate-500 text-sm leading-relaxed">Architektura Local AI, rozwój technologii (Luna Mini Coach + Architect), R&D.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 card-hover transition duration-300 group">
+                    <div class="w-14 h-14 bg-pink-100 rounded-xl flex items-center justify-center mb-6 text-pink-600 text-2xl group-hover:scale-110 transition">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">ChildEmotionAI</h3>
+                    <p class="text-slate-600 mb-6 leading-relaxed text-sm">
+                        Narzędzie wspierające komunikację rodzic-dziecko. AI analizuje elementy rysunku.
+                    </p>
+                    <div class="mb-4 bg-yellow-50 p-2 rounded border border-yellow-100 text-[10px] text-yellow-800">
+                        ⚠️ Narzędzie edukacyjne. Nie służy do diagnozy.
+                    </div>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfIIfc7UzS3D4EV8dqSadLpGmPdRjADaedn09mblL5deAT-LQ/viewform?usp=dialog" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-pink-50 text-pink-700 rounded-lg text-xs font-bold border border-pink-200 hover:bg-pink-100 transition cursor-pointer shadow-sm hover:shadow-md">
+                        <i class="fa-solid fa-flask"></i> Dołącz do testów (Beta)
+                    </a>
                 </div>
-            </div>
 
-            <div class="bg-slate-50 p-10 rounded-[40px] border border-slate-100 max-w-5xl mx-auto">
-                <h3 class="text-xl font-bold text-slate-800 mb-8">Rada Ekspertów & Partnerstwa</h3>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="text-left">
-                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-indigo-500 text-xl"><i class="fa-solid fa-brain"></i></div>
-                        <h4 class="font-bold text-slate-700 text-sm mb-1 uppercase">Psychologia Dziecięca</h4>
-                        <p class="text-[11px] text-slate-600 leading-relaxed">Konsultacje merytoryczne w zakresie walidacji scenariuszy regulacji emocji.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-300 transition duration-300 flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">LOCAL AI (OFFLINE)</div>
+                    <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6 text-indigo-600 text-2xl group-hover:scale-110 transition">
+                        <i class="fa-solid fa-cube"></i>
                     </div>
-                    <div class="text-left">
-                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-emerald-500 text-xl"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <h4 class="font-bold text-slate-700 text-sm mb-1 uppercase">Pedagogika Specjalna</h4>
-                        <p class="text-[11px] text-slate-600 leading-relaxed">Nadzór metodyczny i dostosowanie UX aplikacji do potrzeb dzieci ze SPE.</p>
-                    </div>
-                    <div class="text-left">
-                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-blue-500 text-xl"><i class="fa-solid fa-school"></i></div>
-                        <h4 class="font-bold text-slate-700 text-sm mb-1 uppercase">Placówki Partnerskie</h4>
-                        <p class="text-[11px] text-slate-600 leading-relaxed">Pilotaże na Warmii i Mazurach. Cel: Wdrożenie Q2 2026.</p>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Luna Architect</h3>
+                    <p class="text-slate-600 mb-6 leading-relaxed text-sm flex-grow">
+                        Twój Głos Tworzy Światy. Inteligentny asystent do Roblox działający <strong>lokalnie na Twoim komputerze</strong> (Ollama). 100% prywatności.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-slate-100">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfW4OKlZFcVUH8KiwsylFlZRdDS6nccAjSjhbbPwr8NCuO7qQ/viewform?usp=publish-editor" target="_blank" class="w-full block text-center px-4 py-2 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-lg text-xs font-bold hover:bg-indigo-100 transition cursor-pointer">
+                            <i class="fa-solid fa-flask mr-1"></i> Dołącz do Beta Testów
+                        </a>
+                        <p class="text-[10px] text-center text-slate-400 mt-2">Bezpieczna technologia Stealth Learning</p>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <footer class="hero-bg text-slate-400 py-12 border-t border-slate-800">
-        <div class="container mx-auto px-6 text-center">
-            <div class="text-2xl font-bold text-white mb-4">NeuroEduLabs<span class="text-blue-500">.</span></div>
-            <div class="mb-8 p-6 border border-slate-700 rounded-2xl bg-slate-800/30 max-w-3xl mx-auto">
-                <p class="text-[10px] uppercase tracking-wider font-bold text-slate-500 mb-2 italic">Nota Prawna & RODO Shield</p>
-                <p class="text-[11px] text-slate-300 leading-relaxed">
-                    Aplikacja Luna (Copernix OS) jest narzędziem wspomagającym rozwój i edukację. <strong>Nie jest wyrobem medycznym</strong>. 
-                    <br><strong>Prywatność:</strong> Żadne dane biometryczne, głosowe ani tekstowe nie opuszczają urządzenia stacji roboczej (Privacy by Design). 100% Offline.
+    <section id="scenariusze" class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Jak Luna pomaga nauczycielom? 🎯</h2>
+                <p class="text-lg text-slate-600">Gotowe sesje (3-5 minut) do użycia w klasie. Bez szkoleń. Bez dodatkowych kosztów.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-yellow-400 hover:shadow-md transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">🔆</span>
+                        <h3 class="font-bold text-lg text-slate-800">Poranny Rozruch</h3>
+                        <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded">3 min</span>
+                    </div>
+                    <p class="text-slate-600 text-sm">
+                        Szybkie pobudzenie energii i skupienie uwagi uczniów przed rozpoczęciem lekcji.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-purple-400 hover:shadow-md transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">🤯</span>
+                        <h3 class="font-bold text-lg text-slate-800">Ratunek po Przerwie</h3>
+                        <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded">4 min</span>
+                    </div>
+                    <p class="text-slate-600 text-sm">
+                        Skuteczne wyciszenie klasy i powrót do koncentracji po głośnej, chaotycznej przerwie.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-blue-400 hover:shadow-md transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">📝</span>
+                        <h3 class="font-bold text-lg text-slate-800">Przed Sprawdzianem</h3>
+                        <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded">3 min</span>
+                    </div>
+                    <p class="text-slate-600 text-sm">
+                        Redukcja stresu egzaminacyjnego, ćwiczenia oddechowe i poprawa koncentracji.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="https://lunaminicoach-v2.onrender.com/" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 text-white rounded-lg font-bold hover:bg-slate-700 transition shadow-lg transform hover:scale-105">
+                    <i class="fa-solid fa-school"></i> Zgłoś szkołę do pilotażu (Limit: 10)
+                </a>
+                <p class="text-xs text-slate-500 mt-2">Pilotaż bezpłatny • Q2 2026</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="materialy" class="py-20 bg-white border-t border-slate-200">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-indigo-600 font-bold text-xs tracking-widest uppercase mb-2 block">Strefa Wiedzy</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Materiały Edukacyjne (Bonusy)</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">
+                    Wierzymy w holistyczne podejście. Technologia to tylko narzędzie – kluczem jest świadomy rodzic.
                 </p>
             </div>
-            <p class="text-xs opacity-50">&copy; 2025-2026 Piotr Brodziński & NeuroEduLabs. All Rights Reserved. Powered by Local AI & Roblox.</p>
-        </div>
-    </footer>
 
-</body>
-</html>
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                
+                <div class="bg-indigo-50 border border-indigo-100 p-8 rounded-2xl hover:bg-indigo-100 transition group text-center">
+                    <div class="text-5xl mb-6 group-hover:scale-110 transition">🎨</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Artbook "Dominik Tworzy"</h3>
+                    <p class="text-sm text-slate-600 mb-6 min-h-[60px]">
+                      7 stron autorskich ćwiczeń grafomotorycznych. Dowód na to, jak sztuka łączy się z terapią.
+                    </p>
+                    <a href="https://drive.google.com/file/d/1mmjYH425UNE34Axf1gTytzYGSHuF2p5z/view?usp=drivesdk" target="_blank" class="inline-flex items-center justify-center w-full px-4 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition shadow-lg">
+                        <i class="fa-solid fa-file-pdf mr-2"></i> Pobierz PDF
+                    </a>
+                </div>
+
+                <div class="bg-emerald-50 border border-emerald-100 p-8 rounded-2xl hover:bg-emerald-100 
