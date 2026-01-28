@@ -2,65 +2,39 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroEduLabs | Copernix OS</title>
+    <title>NeuroEduLabs | Copernix OS Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #000510; color: #00d4ff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
-        .neon-border { border: 1px solid #00d4ff; box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
-        .glass { background: rgba(0, 20, 40, 0.95); backdrop-filter: blur(15px); }
-        .glow-text { text-shadow: 0 0 15px #00d4ff; }
-        .btn-master { transition: 0.4s; border: 1px solid #00d4ff; background: rgba(0, 212, 255, 0.1); cursor: pointer; }
-        .btn-master:hover { background: #00d4ff; color: #000; box-shadow: 0 0 40px #00d4ff; }
+        body { background: #000510; color: #00d4ff; font-family: sans-serif; }
+        .glass { background: rgba(0, 20, 40, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(0, 212, 255, 0.2); }
     </style>
 </head>
-<body class="p-4 md:p-12 min-h-screen flex items-center">
-    <div class="max-w-6xl mx-auto w-full">
-        <header class="text-center mb-16">
-            <div class="inline-block p-2 px-6 border border-cyan-800 mb-6 text-[10px] tracking-[0.5em] uppercase text-cyan-500">
-                NeuroEduLabs // TRL 7 // Mission Ready
-            </div>
-            <h1 class="text-6xl md:text-9xl font-black tracking-tighter mb-4 glow-text uppercase text-white">Copernix OS</h1>
-            <p class="text-xl text-cyan-600 uppercase tracking-[0.4em]">System Operacyjny dla Mózgów Przyszłości (WWO)</p>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 glass neon-border p-10 rounded-sm relative overflow-hidden text-white">
-                <div class="absolute top-0 right-0 p-4 opacity-10 text-[60px] font-bold italic">2.25M PLN</div>
-                <h2 class="text-3xl font-bold mb-8 italic uppercase border-b border-cyan-900 pb-2">01 // Specyfikacja Systemu</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed text-slate-300">
-                    <div>
-                        <h3 class="text-cyan-400 font-bold mb-2 uppercase tracking-widest text-white">🛡️ Local AI Shield</h3>
-                        <p>Prywatność absolutna. Przetwarzanie AI odbywa się 100% lokalnie na jednostce MSI. Dane biometryczne nigdy nie opuszczają urządzenia.</p>
-                    </div>
-                    <div>
-                        <h3 class="text-purple-400 font-bold mb-2 uppercase tracking-widest text-white">✋ Copernix Architect</h3>
-                        <p>Naturalny Interfejs (NUI). Gesty dłoni zastępują mysz, redukując stres poznawczy u dzieci wysoko wrażliwych.</p>
-                    </div>
-                </div>
-                <div class="mt-10 p-4 bg-amber-900/20 border border-amber-500/30 text-[10px] text-amber-500 uppercase tracking-[0.2em]">
-                    SZACUNKOWA WARTOŚĆ AKTYWÓW IP: 2.25 MLN PLN. PROJEKT W FAZIE KOMERCJALIZACJI TRL 7.
-                </div>
-            </div>
-
-            <div class="glass p-8 flex flex-col justify-center border border-cyan-900 neon-border">
-                <h3 class="text-center font-bold mb-6 uppercase tracking-widest text-sm text-cyan-400">Panel Operacyjny</h3>
-                <button onclick="connectBridge()" class="btn-master w-full py-6 font-bold uppercase tracking-widest text-md mb-6">
-                    URUCHOM TERMINAL (LIVE)
-                </button>
-                <div class="text-center">
-                    <p class="text-[10px] text-cyan-700 uppercase">Szyfrowanie: NGROK Tunnel Active</p>
-                </div>
-            </div>
+<body class="min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-md w-full glass p-8 rounded-xl text-center">
+        <h1 class="text-4xl font-bold mb-2">Copernix OS</h1>
+        <p class="text-xs text-cyan-600 uppercase tracking-widest mb-8 italic">TRL 7 Infrastructure</p>
+        
+        <div class="mb-6">
+            <label class="block text-[10px] uppercase mb-2">Wprowadź Klucz Licencji</label>
+            <input type="password" id="pin" placeholder="XXXX" maxlength="4" 
+                   class="bg-black border border-cyan-900 text-cyan-400 text-center text-2xl w-full p-3 outline-none focus:border-cyan-400">
         </div>
+        
+        <button onclick="unlock()" class="w-full py-4 bg-cyan-900/50 border border-cyan-400 font-bold uppercase hover:bg-cyan-400 hover:text-black transition">
+            Autoryzuj Dostęp
+        </button>
+        <p id="err" class="text-red-500 text-xs mt-4 hidden">BŁĘDNY KLUCZ DOSTĘPU</p>
     </div>
+
     <script>
-        function connectBridge() {
-            let tunnel = prompt("PODAJ AKTUALNY ADRES NGROK (z Twojego MSI):", localStorage.getItem('active_tunnel') || "https://");
-            if (tunnel) {
-                localStorage.setItem('active_tunnel', tunnel);
-                window.location.href = "bridge.html";
+        function unlock() {
+            const pin = document.getElementById('pin').value;
+            if(pin === "2026") {
+                // Wybór wersji po zalogowaniu
+                const choice = confirm("OK: Luna Junior (Anuluj) | Szkoła V2 (OK)");
+                window.location.href = choice ? "v2/index.html" : "v1/index.html";
+            } else {
+                document.getElementById('err').classList.remove('hidden');
             }
         }
     </script>
