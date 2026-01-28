@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>BRIDGE | COPERNIX OS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="sector_data.js"></script>
+    <script src="world_data.js"></script>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; color: #00d4ff; }
+        .hud { background: rgba(0, 10, 25, 0.95); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(20px); }
+    </style>
+</head>
+<body>
+    <div class="absolute top-5 left-5 hud p-6 w-72 z-50 border-l-4 border-cyan-500">
+        <h1 class="text-xl font-bold uppercase tracking-widest text-white">Bridge Andromeda</h1>
+        <div id="status" class="text-[10px] text-cyan-600 mt-2 font-mono">> LINK ACTIVE</div>
+    </div>
+    <div id="sector-menu" class="absolute top-5 right-5 hud p-4 w-48 z-50 flex flex-col gap-2"></div>
+    <div id="luna-box" class="absolute bottom-10 left-1/2 -translate-x-1/2 hud p-8 z-40 text-center max-w-2xl border-b-4 border-cyan-500">
+        <h2 id="luna-text" class="text-white text-lg italic">Inicjalizacja...</h2>
+    </div>
+    <div id="three-container"></div>
+    <script>
+        let scene, camera, renderer, API_BASE = localStorage.getItem('active_tunnel');
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 50000);
+            camera.position.set(0, 1500, 3000);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('three-container').appendChild(renderer.domElement);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+            
+            const menu = document.getElementById('sector-menu');
+            Object.keys(ALL_SECTORS).forEach(key => {
+                const btn = document.createElement('div');
+                btn.className = "p-2 border border-cyan-900 cursor-pointer text-[10px] uppercase hover:bg-cyan-500/20 text-white";
+                btn.innerHTML = `${ALL_SECTORS[key].emoji} ${ALL_SECTORS[key].title}`;
+                btn.onclick = () => {
+                    const s = ALL_SECTORS[key];
+                    gsap.to(camera.position, { x: s.pos.x, y: s.pos.y + 500, z: s.pos.z + 1200, duration: 2 });
+                    if(API_BASE) fetch(`${API_BASE}/process-command`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({command: `Mów o ${s.title}`})
+                    }).then(r => r.json()).then(d => document.getElementById('luna-text').innerText = d.voice_reply);
+                };
+                menu.appendChild(btn);
+            });
+            animate();
+        }
+        function animate() { requestAnimationFrame(animate); renderer.render(scene, camera); }
+        window.onload = init;
+    </script>
+</body>
+</html>
