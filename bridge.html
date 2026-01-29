@@ -1,69 +1,46 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
+<!DOCTYPE html><html lang="pl"><head>
     <meta charset="UTF-8">
-    <title>COPERNIX OS | ANDROMEDA BRIDGE 6.0</title>
+    <title>COPERNIX OS | ANDROMEDA BRIDGE 7.0</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script type="module" src="sector_data.js"></script>
-    <script type="module" src="warmia_module.js"></script>
-    <script type="module" src="space_module.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+    <script src="sector_data.js"></script>
+    <script src="warmia_module.js"></script>
+    <script src="space_module.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; color: #00d4ff; }
         .hud-glass { background: rgba(0, 10, 25, 0.85); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(15px); }
-        .sector-btn { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
-        .sector-btn:hover { background: rgba(0, 212, 255, 0.1); border-left-color: #00d4ff; }
-        .active-sector { border-left-color: #fff; background: rgba(0, 212, 255, 0.3); }
-        .scan-line { width: 100%; height: 2px; background: rgba(0, 212, 255, 0.1); position: absolute; animation: scan 8s infinite linear; z-index: 100; pointer-events: none; }
-        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
-    </style>
-</head>
-<body>
-    <div class="scan-line"></div>
-
-    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded-sm border-l-4 border-cyan-500">
+        #video-input { position: absolute; bottom: 20px; right: 20px; width: 160px; border-radius: 10px; border: 2px solid #00d4ff; transform: scaleX(-1); }
+    </style></head><body>
+    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded border-l-4 border-cyan-500">
         <h1 class="text-xl font-bold tracking-widest uppercase text-white">Copernix OS</h1>
-        <div class="flex items-center gap-2 mt-1">
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-widest">Operator: Dominik</span>
-        </div>
-        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> System Online...</div>
+        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> SYSTEM ONLINE...</div>
     </div>
 
-    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50 max-h-[70vh] overflow-y-auto">
-        <p class="text-[10px] font-bold text-center mb-4 opacity-50 uppercase tracking-widest">Nawigacja</p>
-        <div onclick="switchLoc('olsztyn')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
-            <span class="text-2xl">🏰</span> <span class="text-[11px] font-bold uppercase">Olsztyn 3D</span>
-        </div>
-        <div onclick="switchLoc('sniardwy')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
-            <span class="text-2xl">⛵</span> <span class="text-[11px] font-bold uppercase">Mazury 3D</span>
-        </div>
-        <div onclick="switchLoc('andromeda')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
-            <span class="text-2xl">🌌</span> <span class="text-[11px] font-bold uppercase">Mglawica Andromeda</span>
-        </div>
-        <div onclick="switchLoc('earth')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
-            <span class="text-2xl">🌍</span> <span class="text-[11px] font-bold uppercase">Orbita Ziemska</span>
-        </div>
+    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50 text-white">
+        <p class="text-[10px] text-center mb-4 opacity-50 uppercase tracking-widest">Nawigacja Ręczna</p>
+        <button onclick="switchLoc('olsztyn')" class="w-full p-2 mb-2 bg-cyan-900/20 border border-cyan-800 hover:border-cyan-400 transition text-xs uppercase">🏰 Olsztyn 3D</button>
+        <button onclick="switchLoc('andromeda')" class="w-full p-2 mb-2 bg-cyan-900/20 border border-cyan-800 hover:border-cyan-400 transition text-xs uppercase">🌌 Andromeda</button>
+        <button onclick="switchLoc('earth')" class="w-full p-2 bg-cyan-900/20 border border-cyan-800 hover:border-cyan-400 transition text-xs uppercase">🌍 Orbita</button>
     </div>
 
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full">
-        <h2 id="luna-msg" class="text-white text-xl mb-6 italic font-light drop-shadow-lg">Luna: Gotowa na komendy...</h2>
+        <h2 id="luna-msg" class="text-white text-xl mb-6 italic font-light drop-shadow-lg">Luna: Wybierz tryb sterowania...</h2>
         <button onclick="startVoice()" class="px-12 py-5 bg-cyan-600/20 border-2 border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition uppercase tracking-widest text-sm shadow-[0_0_40px_rgba(0,212,255,0.2)]">
-            🎤 Aktywuj Mikrofon
+            🎤 Komenda Głosowa
         </button>
     </div>
 
+    <video id="video-input" autoplay></video>
+
     <div id="three-container"></div>
 
-    <script type="module">
-        // Importujemy Twoje funkcje 3D (muszą być na GitHubie!)
-        import { loadWarmiaTerrain } from './warmia_module.js';
-        import { loadSpaceModule } from './space_module.js';
-
+    <script>
         const NGROK_URL = "https://unauthentic-kylah-exiguously.ngrok-free.dev";
         let scene, camera, renderer, earth, current3DObject;
 
@@ -72,53 +49,48 @@
             camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 10000);
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+            document.getElementById('three-container').appendChild(renderer.domElement);
 
-            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-            const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+            const sun = new THREE.DirectionalLight(0xffffff, 1);
             sun.position.set(500, 1000, 500);
             scene.add(sun);
 
-            // Placeholder kuli ziemskiej
-            const earthGeo = new THREE.SphereGeometry(100, 64, 64);
+            const earthGeo = new THREE.SphereGeometry(100, 32, 32);
             const earthMat = new THREE.MeshStandardMaterial({ color: 0x0044ff, wireframe: true });
             earth = new THREE.Mesh(earthGeo, earthMat);
             scene.add(earth);
             camera.position.z = 400;
 
+            initMediaPipe(); // Start gestów
             animate();
-            log("> ANDROMEDA BRIDGE ONLINE");
+            log("> ANDROMEDA BRIDGE 7.0: GŁOS + GESTY + MANUAL");
         }
 
+        // --- TRYB 1: MANUALNY (PRZYCISKI) ---
         window.switchLoc = function(loc) {
             log(`> SKOK DO: ${loc.toUpperCase()}`);
             if(current3DObject) scene.remove(current3DObject);
             earth.visible = (loc === 'earth');
 
-            if(loc === 'olsztyn') {
-                document.getElementById('luna-msg').innerText = "Luna: Renderuję teren Warmii...";
-                current3DObject = loadWarmiaTerrain(scene);
-                gsap.to(camera.position, { x: 0, y: 800, z: 1200, duration: 2.5 });
+            if(loc === 'olsztyn' && window.loadWarmiaTerrain) {
+                current3DObject = window.loadWarmiaTerrain(scene);
+                gsap.to(camera.position, { x: 0, y: 500, z: 800, duration: 2 });
             }
-            if(loc === 'andromeda') {
-                document.getElementById('luna-msg').innerText = "Luna: Kurs na Mglawicę Andromeda...";
-                current3DObject = loadSpaceModule(scene, 'andromeda');
+            if(loc === 'andromeda' && window.loadSpaceModule) {
+                current3DObject = window.loadSpaceModule(scene, 'andromeda');
                 gsap.to(camera.position, { x: 0, y: 0, z: 2000, duration: 3 });
             }
-            if(loc === 'earth') {
-                gsap.to(camera.position, { x: 0, y: 0, z: 400, duration: 2 });
-            }
-        }
+            if(loc === 'earth') gsap.to(camera.position, { x: 0, y: 0, z: 400, duration: 2 });
+        };
 
-        window.startVoice = async function() {
+        // --- TRYB 2: GŁOSOWY ---
+        async function startVoice() {
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'pl-PL';
-            recognition.onstart = () => { log("> NASŁUCHIWANIE..."); document.getElementById('luna-msg').innerText = "Luna: Słucham Cię..."; };
-
             recognition.onresult = async (event) => {
                 const text = event.results[0][0].transcript;
                 log(`> TY: "${text}"`);
-                
                 try {
                     const res = await fetch(`${NGROK_URL}/process-command`, {
                         method: 'POST',
@@ -127,14 +99,30 @@
                     });
                     const data = await res.json();
                     document.getElementById('luna-msg').innerText = "Luna: " + data.reply;
-                    
                     if(data.action === 'nav') switchLoc(data.target);
-                    log(`> LUNA: ${data.reply}`);
-                } catch(e) {
-                    log("! BŁĄD POŁĄCZENIA NGROK");
-                }
+                } catch(e) { log("! BŁĄD NGROK"); }
             };
             recognition.start();
+        }
+
+        // --- TRYB 3: GESTY (MAGICZNA RÓŻDŻKA) ---
+        function initMediaPipe() {
+            const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+            hands.onResults(results => {
+                if (results.multiHandLandmarks && results.multiHandLandmarks[0]) {
+                    const hand = results.multiHandLandmarks[0];
+                    // Obracanie modelem za pomocą palca wskazującego
+                    if(current3DObject) {
+                        current3DObject.rotation.y = (hand[8].x - 0.5) * 4;
+                        current3DObject.rotation.x = (hand[8].y - 0.5) * 4;
+                    }
+                }
+            });
+            const cameraPipe = new Camera(document.getElementById('video-input'), {
+                onFrame: async () => { await hands.send({image: document.getElementById('video-input')}); }
+            });
+            cameraPipe.start();
         }
 
         function log(msg) {
@@ -148,8 +136,5 @@
             if(earth.visible) earth.rotation.y += 0.002;
             renderer.render(scene, camera);
         }
-
-        init();
-    </script>
-</body>
-</html>
+        window.onload = init;
+    </script></body></html>
