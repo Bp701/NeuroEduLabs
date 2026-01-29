@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>COPERNIX OS | DIAMOND BRIDGE 6.0</title>
+    <title>COPERNIX OS | ANDROMEDA BRIDGE 6.0</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +17,7 @@
         .hud-glass { background: rgba(0, 10, 25, 0.85); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(15px); }
         .sector-btn { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
         .sector-btn:hover { background: rgba(0, 212, 255, 0.1); border-left-color: #00d4ff; }
-        .active-sector { border-left-color: #fff; background: rgba(0, 212, 255, 0.2); }
+        .active-sector { border-left-color: #fff; background: rgba(0, 212, 255, 0.3); }
         .scan-line { width: 100%; height: 2px; background: rgba(0, 212, 255, 0.1); position: absolute; animation: scan 8s infinite linear; z-index: 100; pointer-events: none; }
         @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
@@ -25,97 +25,116 @@
 <body>
     <div class="scan-line"></div>
 
-    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded-sm border-l-4 border-cyan-500 shadow-2xl">
-        <h1 class="text-xl font-bold tracking-widest uppercase">Copernix OS v6.0</h1>
+    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded-sm border-l-4 border-cyan-500">
+        <h1 class="text-xl font-bold tracking-widest uppercase text-white">Copernix OS</h1>
         <div class="flex items-center gap-2 mt-1">
             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-widest">Operator: Dominik</span>
         </div>
-        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> SYSTEM ONLINE...</div>
+        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> System Online...</div>
     </div>
 
-    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50 max-h-[80vh] overflow-y-auto border-r-4 border-cyan-900">
-        <p class="text-[10px] font-bold text-center mb-4 opacity-50 uppercase tracking-tighter">Baza Sektorów 3D</p>
-    </div>
-
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full max-w-xl">
-        <div id="luna-bubble" class="hud-glass p-4 mb-4 rounded-xl border-t-2 border-cyan-500 hidden animate-bounce">
-            <p id="luna-text" class="text-white italic text-sm">...</p>
+    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50 max-h-[70vh] overflow-y-auto">
+        <p class="text-[10px] font-bold text-center mb-4 opacity-50 uppercase tracking-widest">Nawigacja</p>
+        <div onclick="switchLoc('olsztyn')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
+            <span class="text-2xl">🏰</span> <span class="text-[11px] font-bold uppercase">Olsztyn 3D</span>
         </div>
-        <button onclick="startVoice()" class="px-12 py-4 bg-cyan-600/20 border border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(0,212,255,0.2)]">
-            🎤 Komenda Głosowa
+        <div onclick="switchLoc('sniardwy')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
+            <span class="text-2xl">⛵</span> <span class="text-[11px] font-bold uppercase">Mazury 3D</span>
+        </div>
+        <div onclick="switchLoc('andromeda')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
+            <span class="text-2xl">🌌</span> <span class="text-[11px] font-bold uppercase">Mglawica Andromeda</span>
+        </div>
+        <div onclick="switchLoc('earth')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
+            <span class="text-2xl">🌍</span> <span class="text-[11px] font-bold uppercase">Orbita Ziemska</span>
+        </div>
+    </div>
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full">
+        <h2 id="luna-msg" class="text-white text-xl mb-6 italic font-light drop-shadow-lg">Luna: Gotowa na komendy...</h2>
+        <button onclick="startVoice()" class="px-12 py-5 bg-cyan-600/20 border-2 border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition uppercase tracking-widest text-sm shadow-[0_0_40px_rgba(0,212,255,0.2)]">
+            🎤 Aktywuj Mikrofon
         </button>
     </div>
 
     <div id="three-container"></div>
 
-    <script>
-        // --- KONFIGURACJA HYBRYDOWA ---
+    <script type="module">
+        // Importujemy Twoje funkcje 3D (muszą być na GitHubie!)
+        import { loadWarmiaTerrain } from './warmia_module.js';
+        import { loadSpaceModule } from './space_module.js';
+
         const NGROK_URL = "https://unauthentic-kylah-exiguously.ngrok-free.dev";
-        let scene, camera, renderer;
+        let scene, camera, renderer, earth, current3DObject;
 
         function init() {
             scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x00050a, 0.0008);
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 30000);
-            camera.position.set(0, 1000, 3000);
-
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 10000);
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
             scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-            const sun = new THREE.DirectionalLight(0xffffff, 1.5);
-            sun.position.set(1000, 2000, 1000);
+            const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+            sun.position.set(500, 1000, 500);
             scene.add(sun);
 
-            renderMenu();
+            // Placeholder kuli ziemskiej
+            const earthGeo = new THREE.SphereGeometry(100, 64, 64);
+            const earthMat = new THREE.MeshStandardMaterial({ color: 0x0044ff, wireframe: true });
+            earth = new THREE.Mesh(earthGeo, earthMat);
+            scene.add(earth);
+            camera.position.z = 400;
+
             animate();
-            
-            // Start w Olsztynie!
-            setTimeout(() => switchSector('olsztyn'), 1000);
-            log("> MODUŁY GEOPRZESTRZENNE ZAŁADOWANE");
+            log("> ANDROMEDA BRIDGE ONLINE");
         }
 
-        function renderMenu() {
-            const menu = document.getElementById('sector-menu');
-            // ALL_SECTORS pochodzi z sector_data.js
-            Object.keys(ALL_SECTORS).forEach(key => {
-                const s = ALL_SECTORS[key];
-                const btn = document.createElement('div');
-                btn.className = 'sector-btn p-3 mb-2 flex items-center gap-4 text-white rounded-sm';
-                btn.id = `btn-${key}`;
-                btn.innerHTML = `<span class="text-2xl">${s.emoji}</span> <span class="text-[11px] font-bold uppercase">${s.title}</span>`;
-                btn.onclick = () => switchSector(key);
-                menu.appendChild(btn);
-            });
+        window.switchLoc = function(loc) {
+            log(`> SKOK DO: ${loc.toUpperCase()}`);
+            if(current3DObject) scene.remove(current3DObject);
+            earth.visible = (loc === 'earth');
+
+            if(loc === 'olsztyn') {
+                document.getElementById('luna-msg').innerText = "Luna: Renderuję teren Warmii...";
+                current3DObject = loadWarmiaTerrain(scene);
+                gsap.to(camera.position, { x: 0, y: 800, z: 1200, duration: 2.5 });
+            }
+            if(loc === 'andromeda') {
+                document.getElementById('luna-msg').innerText = "Luna: Kurs na Mglawicę Andromeda...";
+                current3DObject = loadSpaceModule(scene, 'andromeda');
+                gsap.to(camera.position, { x: 0, y: 0, z: 2000, duration: 3 });
+            }
+            if(loc === 'earth') {
+                gsap.to(camera.position, { x: 0, y: 0, z: 400, duration: 2 });
+            }
         }
 
-        function switchSector(id) {
-            const data = ALL_SECTORS[id];
-            log(`> SKOK TEMPORALNY: ${data.title}`);
-            
-            // Czyść stare obiekty
-            for(let i = scene.children.length - 1; i >= 0; i--) {
-                let obj = scene.children[i];
-                if(obj.type === "Mesh" && obj !== scene.children[0]) scene.remove(obj);
-            }
+        window.startVoice = async function() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'pl-PL';
+            recognition.onstart = () => { log("> NASŁUCHIWANIE..."); document.getElementById('luna-msg').innerText = "Luna: Słucham Cię..."; };
 
-            // Animacja kamery
-            gsap.to(camera.position, {
-                x: data.pos.x, y: data.pos.y + 500, z: data.pos.z + 1200,
-                duration: 2.5, ease: "power3.inOut"
-            });
-
-            // Ładowanie terenu (jeśli moduł istnieje)
-            if(id === 'olsztyn' && window.loadWarmiaTerrain) {
-                window.loadWarmiaTerrain(scene);
-            } else if (window.loadSpaceModule) {
-                window.loadSpaceModule(scene);
-            }
-
-            document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('active-sector'));
-            document.getElementById(`btn-${id}`).classList.add('active-sector');
+            recognition.onresult = async (event) => {
+                const text = event.results[0][0].transcript;
+                log(`> TY: "${text}"`);
+                
+                try {
+                    const res = await fetch(`${NGROK_URL}/process-command`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ prompt: text })
+                    });
+                    const data = await res.json();
+                    document.getElementById('luna-msg').innerText = "Luna: " + data.reply;
+                    
+                    if(data.action === 'nav') switchLoc(data.target);
+                    log(`> LUNA: ${data.reply}`);
+                } catch(e) {
+                    log("! BŁĄD POŁĄCZENIA NGROK");
+                }
+            };
+            recognition.start();
         }
 
         function log(msg) {
@@ -124,45 +143,13 @@
             l.scrollTop = l.scrollHeight;
         }
 
-        async function startVoice() {
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = 'pl-PL';
-            recognition.start();
-            log("> NASŁUCHIWANIE...");
-
-            recognition.onresult = async (event) => {
-                const text = event.results[0][0].transcript;
-                log(`> TY: \"${text}\"`);
-                document.getElementById('luna-bubble').classList.remove('hidden');
-                document.getElementById('luna-text').innerText = "Analizuję komendę...";
-
-                try {
-                    const res = await fetch(`${NGROK_URL}/process-command`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ prompt: text })
-                    });
-                    const data = await res.json();
-                    document.getElementById('luna-text').innerText = data.reply;
-                    log(`> LUNA: ${data.reply}`);
-                } catch(e) {
-                    log("! LINK NGROK WYGASŁ LUB MSI JEST OFFLINE");
-                }
-            };
-        }
-
         function animate() {
             requestAnimationFrame(animate);
+            if(earth.visible) earth.rotation.y += 0.002;
             renderer.render(scene, camera);
         }
 
-
-                // Ekspozycja funkcji dla onclick
-    window.switchSector = switchSector;
-    window.startVoice = startVoice;
-    
-    window.onload = init;
+        init();
     </script>
-
-    </body>
+</body>
 </html>
