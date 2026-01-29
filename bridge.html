@@ -2,97 +2,120 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>COPERNIX OS | DIAMOND BRIDGE</title>
+    <title>COPERNIX OS | DIAMOND BRIDGE 6.0</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="sector_data.js"></script>
+    <script src="warmia_module.js"></script>
+    <script src="space_module.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; color: #00d4ff; }
         .hud-glass { background: rgba(0, 10, 25, 0.85); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(15px); }
         .sector-btn { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
         .sector-btn:hover { background: rgba(0, 212, 255, 0.1); border-left-color: #00d4ff; }
-        .active-sector { border-left-color: #fff; background: rgba(0, 212, 255, 0.3); }
-        #luna-msg { text-shadow: 0 0 10px #00d4ff; }
+        .active-sector { border-left-color: #fff; background: rgba(0, 212, 255, 0.2); }
+        .scan-line { width: 100%; height: 2px; background: rgba(0, 212, 255, 0.1); position: absolute; animation: scan 8s infinite linear; z-index: 100; pointer-events: none; }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
 </head>
 <body>
+    <div class="scan-line"></div>
 
-    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded-sm border-l-4 border-cyan-500">
+    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded-sm border-l-4 border-cyan-500 shadow-2xl">
         <h1 class="text-xl font-bold tracking-widest uppercase">Copernix OS v6.0</h1>
         <div class="flex items-center gap-2 mt-1">
             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-widest">Vision Module: Active</span>
+            <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-widest">Operator: Dominik</span>
         </div>
-        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> System Initialized...</div>
+        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> SYSTEM ONLINE...</div>
     </div>
 
-    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50">
-        <p class="text-[10px] font-bold text-center mb-4 opacity-50 uppercase tracking-widest">Wybierz Lokalizację</p>
-        <div onclick="switchLoc('olsztyn')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
-            <span class="text-2xl">🏰</span> <span class="text-[11px] font-bold uppercase">Olsztyn 3D</span>
-        </div>
-        <div onclick="switchLoc('mars')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
-            <span class="text-2xl">☄️</span> <span class="text-[11px] font-bold uppercase">Baza Mars Alpha</span>
-        </div>
-        <div onclick="switchLoc('earth')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
-            <span class="text-2xl">🌍</span> <span class="text-[11px] font-bold uppercase">Orbita Ziemska</span>
-        </div>
+    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50 max-h-[80vh] overflow-y-auto border-r-4 border-cyan-900">
+        <p class="text-[10px] font-bold text-center mb-4 opacity-50 uppercase tracking-tighter">Baza Sektorów 3D</p>
     </div>
 
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full max-w-xl">
-        <h2 id="luna-msg" class="text-white text-xl mb-6 italic font-light">Luna: System gotowy do skoku...</h2>
-        <button onclick="startVoice()" class="px-12 py-4 bg-cyan-600/20 border border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(0,212,255,0.3)]">
-            🎤 Powiedz co zbudować
+        <div id="luna-bubble" class="hud-glass p-4 mb-4 rounded-xl border-t-2 border-cyan-500 hidden animate-bounce">
+            <p id="luna-text" class="text-white italic text-sm">...</p>
+        </div>
+        <button onclick="startVoice()" class="px-12 py-4 bg-cyan-600/20 border border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(0,212,255,0.2)]">
+            🎤 Komenda Głosowa
         </button>
     </div>
 
     <div id="three-container"></div>
 
     <script>
-        // --- KONFIGURACJA NGROK ---
-        // WKLEJ TUTAJ SWÓJ AKTUALNY LINK Z NGROK:
+        // --- KONFIGURACJA HYBRYDOWA ---
         const NGROK_URL = "https://unauthentic-kylah-exiguously.ngrok-free.dev";
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 10000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        let scene, camera, renderer;
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-        const sun = new THREE.DirectionalLight(0xffffff, 1);
-        sun.position.set(500, 1000, 500);
-        scene.add(sun);
+        function init() {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x00050a, 0.0008);
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 30000);
+            camera.position.set(0, 1000, 3000);
 
-        const earthGeo = new THREE.SphereGeometry(100, 64, 64);
-        const earthMat = new THREE.MeshStandardMaterial({ color: 0x0044ff, wireframe: true });
-        const earth = new THREE.Mesh(earthGeo, earthMat);
-        scene.add(earth);
-        camera.position.z = 400;
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            earth.rotation.y += 0.002;
-            renderer.render(scene, camera);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+            const sun = new THREE.DirectionalLight(0xffffff, 1.5);
+            sun.position.set(1000, 2000, 1000);
+            scene.add(sun);
+
+            renderMenu();
+            animate();
+            
+            // Start w Olsztynie!
+            setTimeout(() => switchSector('olsztyn'), 1000);
+            log("> MODUŁY GEOPRZESTRZENNE ZAŁADOWANE");
         }
-        animate();
 
-        function switchLoc(loc) {
-            log(`> SKOK TEMPORALNY: ${loc.toUpperCase()}`);
-            if(loc === 'olsztyn') {
-                document.getElementById('luna-msg').innerText = "Luna: Przenoszę nas nad Olsztyn...";
-                gsap.to(camera.position, { z: 180, duration: 2 });
-                earth.material.color.setHex(0x00ff88);
+        function renderMenu() {
+            const menu = document.getElementById('sector-menu');
+            // ALL_SECTORS pochodzi z sector_data.js
+            Object.keys(ALL_SECTORS).forEach(key => {
+                const s = ALL_SECTORS[key];
+                const btn = document.createElement('div');
+                btn.className = 'sector-btn p-3 mb-2 flex items-center gap-4 text-white rounded-sm';
+                btn.id = `btn-${key}`;
+                btn.innerHTML = `<span class="text-2xl">${s.emoji}</span> <span class="text-[11px] font-bold uppercase">${s.title}</span>`;
+                btn.onclick = () => switchSector(key);
+                menu.appendChild(btn);
+            });
+        }
+
+        function switchSector(id) {
+            const data = ALL_SECTORS[id];
+            log(`> SKOK TEMPORALNY: ${data.title}`);
+            
+            // Czyść stare obiekty
+            for(let i = scene.children.length - 1; i >= 0; i--) {
+                let obj = scene.children[i];
+                if(obj.type === "Mesh" && obj !== scene.children[0]) scene.remove(obj);
             }
-            if(loc === 'mars') {
-                document.getElementById('luna-msg').innerText = "Luna: Lądujemy w Bazie Mars Alpha...";
-                earth.material.color.setHex(0xff4400);
+
+            // Animacja kamery
+            gsap.to(camera.position, {
+                x: data.pos.x, y: data.pos.y + 500, z: data.pos.z + 1200,
+                duration: 2.5, ease: "power3.inOut"
+            });
+
+            // Ładowanie terenu (jeśli moduł istnieje)
+            if(id === 'olsztyn' && window.loadWarmiaTerrain) {
+                window.loadWarmiaTerrain(scene);
+            } else if (window.loadSpaceModule) {
+                window.loadSpaceModule(scene);
             }
-            if(loc === 'earth') {
-                document.getElementById('luna-msg').innerText = "Luna: Wracamy na orbitę...";
-                gsap.to(camera.position, { z: 400, duration: 2 });
-                earth.material.color.setHex(0x0044ff);
-            }
+
+            document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('active-sector'));
+            document.getElementById(`btn-${id}`).classList.add('active-sector');
         }
 
         function log(msg) {
@@ -101,18 +124,17 @@
             l.scrollTop = l.scrollHeight;
         }
 
-        // --- MAGIA GŁOSU PRZEZ NGROK ---
         async function startVoice() {
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'pl-PL';
             recognition.start();
-            document.getElementById('luna-msg').innerText = "Luna: Słucham Cię...";
-            log("> Mikrofon: AKTYWNY");
+            log("> NASŁUCHIWANIE...");
 
             recognition.onresult = async (event) => {
                 const text = event.results[0][0].transcript;
-                log(`> USER: \"${text}\"`);
-                document.getElementById('luna-msg').innerText = "Luna: Myślę...";
+                log(`> TY: \"${text}\"`);
+                document.getElementById('luna-bubble').classList.remove('hidden');
+                document.getElementById('luna-text').innerText = "Analizuję komendę...";
 
                 try {
                     const res = await fetch(`${NGROK_URL}/process-command`, {
@@ -121,17 +143,20 @@
                         body: JSON.stringify({ prompt: text })
                     });
                     const data = await res.json();
-                    document.getElementById('luna-msg').innerText = "Luna: " + data.reply;
+                    document.getElementById('luna-text').innerText = data.reply;
                     log(`> LUNA: ${data.reply}`);
-                    
-                    // Jeśli AI zwróci kod Roblox, loguj to jako sukces
-                    if(data.lua_code) log("> EXEC: Kod przesłany do Roblox");
                 } catch(e) {
-                    log("! BŁĄD POŁĄCZENIA Z MSI (Sprawdź ngrok)");
-                    document.getElementById('luna-msg').innerText = "Luna: Nie widzę Twojego laptopa MSI...";
+                    log("! LINK NGROK WYGASŁ LUB MSI JEST OFFLINE");
                 }
             };
         }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        window.onload = init;
     </script>
 </body>
 </html>
