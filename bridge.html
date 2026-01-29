@@ -24,7 +24,7 @@
     </div>
     <div id="three-container"></div>
     <script>
-        let scene, camera, renderer, API_BASE = localStorage.getItem('active_tunnel');
+        let scene, camera, renderer, API_BASE = "https://TWOJ-NGROK-LINK.ngrok-free.app" // ZMIEŃ NA AKTUALNY LINK NGROK;
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 50000);
