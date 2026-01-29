@@ -2,58 +2,137 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>BRIDGE | COPERNIX OS</title>
+    <title>COPERNIX OS | DIAMOND BRIDGE</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="sector_data.js"></script>
-    <script src="world_data.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; color: #00d4ff; }
-        .hud { background: rgba(0, 10, 25, 0.95); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(20px); }
+        .hud-glass { background: rgba(0, 10, 25, 0.85); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(15px); }
+        .sector-btn { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
+        .sector-btn:hover { background: rgba(0, 212, 255, 0.1); border-left-color: #00d4ff; }
+        .active-sector { border-left-color: #fff; background: rgba(0, 212, 255, 0.3); }
+        #luna-msg { text-shadow: 0 0 10px #00d4ff; }
     </style>
 </head>
 <body>
-    <div class="absolute top-5 left-5 hud p-6 w-72 z-50 border-l-4 border-cyan-500">
-        <h1 class="text-xl font-bold uppercase tracking-widest text-white">Bridge Andromeda</h1>
-        <div id="status" class="text-[10px] text-cyan-600 mt-2 font-mono">> LINK ACTIVE</div>
+
+    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded-sm border-l-4 border-cyan-500">
+        <h1 class="text-xl font-bold tracking-widest uppercase">Copernix OS v6.0</h1>
+        <div class="flex items-center gap-2 mt-1">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-widest">Vision Module: Active</span>
+        </div>
+        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> System Initialized...</div>
     </div>
-    <div id="sector-menu" class="absolute top-5 right-5 hud p-4 w-48 z-50 flex flex-col gap-2"></div>
-    <div id="luna-box" class="absolute bottom-10 left-1/2 -translate-x-1/2 hud p-8 z-40 text-center max-w-2xl border-b-4 border-cyan-500">
-        <h2 id="luna-text" class="text-white text-lg italic">Inicjalizacja...</h2>
+
+    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50">
+        <p class="text-[10px] font-bold text-center mb-4 opacity-50 uppercase tracking-widest">Wybierz Lokalizację</p>
+        <div onclick="switchLoc('olsztyn')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
+            <span class="text-2xl">🏰</span> <span class="text-[11px] font-bold uppercase">Olsztyn 3D</span>
+        </div>
+        <div onclick="switchLoc('mars')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
+            <span class="text-2xl">☄️</span> <span class="text-[11px] font-bold uppercase">Baza Mars Alpha</span>
+        </div>
+        <div onclick="switchLoc('earth')" class="sector-btn p-3 mb-2 flex items-center gap-4 text-white">
+            <span class="text-2xl">🌍</span> <span class="text-[11px] font-bold uppercase">Orbita Ziemska</span>
+        </div>
     </div>
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full max-w-xl">
+        <h2 id="luna-msg" class="text-white text-xl mb-6 italic font-light">Luna: System gotowy do skoku...</h2>
+        <button onclick="startVoice()" class="px-12 py-4 bg-cyan-600/20 border border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(0,212,255,0.3)]">
+            🎤 Powiedz co zbudować
+        </button>
+    </div>
+
     <div id="three-container"></div>
+
     <script>
-        let scene, camera, renderer, API_BASE = "https://TWOJ-NGROK-LINK.ngrok-free.app" // ZMIEŃ NA AKTUALNY LINK NGROK;
-        function init() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 50000);
-            camera.position.set(0, 1500, 3000);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('three-container').appendChild(renderer.domElement);
-            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-            
-            const menu = document.getElementById('sector-menu');
-            Object.keys(ALL_SECTORS).forEach(key => {
-                const btn = document.createElement('div');
-                btn.className = "p-2 border border-cyan-900 cursor-pointer text-[10px] uppercase hover:bg-cyan-500/20 text-white";
-                btn.innerHTML = `${ALL_SECTORS[key].emoji} ${ALL_SECTORS[key].title}`;
-                btn.onclick = () => {
-                    const s = ALL_SECTORS[key];
-                    gsap.to(camera.position, { x: s.pos.x, y: s.pos.y + 500, z: s.pos.z + 1200, duration: 2 });
-                    if(API_BASE) fetch(`${API_BASE}/process-command`, {
+        // --- KONFIGURACJA NGROK ---
+        // WKLEJ TUTAJ SWÓJ AKTUALNY LINK Z NGROK:
+        const NGROK_URL = "https://TWOJ-LINK-NGROK.ngrok-free.app";
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 10000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+        const sun = new THREE.DirectionalLight(0xffffff, 1);
+        sun.position.set(500, 1000, 500);
+        scene.add(sun);
+
+        const earthGeo = new THREE.SphereGeometry(100, 64, 64);
+        const earthMat = new THREE.MeshStandardMaterial({ color: 0x0044ff, wireframe: true });
+        const earth = new THREE.Mesh(earthGeo, earthMat);
+        scene.add(earth);
+        camera.position.z = 400;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            earth.rotation.y += 0.002;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        function switchLoc(loc) {
+            log(`> SKOK TEMPORALNY: ${loc.toUpperCase()}`);
+            if(loc === 'olsztyn') {
+                document.getElementById('luna-msg').innerText = "Luna: Przenoszę nas nad Olsztyn...";
+                gsap.to(camera.position, { z: 180, duration: 2 });
+                earth.material.color.setHex(0x00ff88);
+            }
+            if(loc === 'mars') {
+                document.getElementById('luna-msg').innerText = "Luna: Lądujemy w Bazie Mars Alpha...";
+                earth.material.color.setHex(0xff4400);
+            }
+            if(loc === 'earth') {
+                document.getElementById('luna-msg').innerText = "Luna: Wracamy na orbitę...";
+                gsap.to(camera.position, { z: 400, duration: 2 });
+                earth.material.color.setHex(0x0044ff);
+            }
+        }
+
+        function log(msg) {
+            const l = document.getElementById('logs');
+            l.innerHTML += `<br>${msg}`;
+            l.scrollTop = l.scrollHeight;
+        }
+
+        // --- MAGIA GŁOSU PRZEZ NGROK ---
+        async function startVoice() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'pl-PL';
+            recognition.start();
+            document.getElementById('luna-msg').innerText = "Luna: Słucham Cię...";
+            log("> Mikrofon: AKTYWNY");
+
+            recognition.onresult = async (event) => {
+                const text = event.results[0][0].transcript;
+                log(`> USER: \"${text}\"`);
+                document.getElementById('luna-msg').innerText = "Luna: Myślę...";
+
+                try {
+                    const res = await fetch(`${NGROK_URL}/process-command`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({command: `Mów o ${s.title}`})
-                    }).then(r => r.json()).then(d => document.getElementById('luna-text').innerText = d.voice_reply);
-                };
-                menu.appendChild(btn);
-            });
-            animate();
+                        body: JSON.stringify({ prompt: text })
+                    });
+                    const data = await res.json();
+                    document.getElementById('luna-msg').innerText = "Luna: " + data.reply;
+                    log(`> LUNA: ${data.reply}`);
+                    
+                    // Jeśli AI zwróci kod Roblox, loguj to jako sukces
+                    if(data.lua_code) log("> EXEC: Kod przesłany do Roblox");
+                } catch(e) {
+                    log("! BŁĄD POŁĄCZENIA Z MSI (Sprawdź ngrok)");
+                    document.getElementById('luna-msg').innerText = "Luna: Nie widzę Twojego laptopa MSI...";
+                }
+            };
         }
-        function animate() { requestAnimationFrame(animate); renderer.render(scene, camera); }
-        window.onload = init;
     </script>
 </body>
 </html>
