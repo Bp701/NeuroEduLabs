@@ -7,9 +7,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script src="sector_data.js"></script>
-    <script src="warmia_module.js"></script>
-    <script src="space_module.js"></script>
+    <script type="module" src="sector_data.js"></script>
+    <script type="module" src="warmia_module.js"></script>
+    <script type="module" src="space_module.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
@@ -156,7 +156,13 @@
             renderer.render(scene, camera);
         }
 
-        window.onload = init;
+
+                // Ekspozycja funkcji dla onclick
+    window.switchSector = switchSector;
+    window.startVoice = startVoice;
+    
+    window.onload = init;
     </script>
-</body>
+
+    </body>
 </html>
