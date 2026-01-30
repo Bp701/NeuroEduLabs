@@ -11,151 +11,43 @@
     <script src="sector_data.js"></script>
     <script src="warmia_module.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; color: #00d4ff; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; }
         .hud-glass { background: rgba(0, 10, 25, 0.95); border: 1px solid #00d4ff; backdrop-filter: blur(25px); }
         #webcam { position: absolute; bottom: 20px; right: 20px; width: 180px; border: 2px solid #00d4ff; border-radius: 12px; transform: scaleX(-1); opacity: 0.6; z-index: 100; }
-        .aether-aura { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%); pointer-events: none; opacity: 0; z-index: 5; }
     </style>
 </head>
 <body>
-    <div id="luna-aether" class="aether-aura"></div>
     <video id="webcam" autoplay></video>
-
     <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded border-l-4 border-cyan-500 shadow-2xl">
         <h1 class="text-3xl font-black italic tracking-tighter text-white uppercase">Copernix OS</h1>
         <div class="flex items-center gap-2 mt-1">
             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span id="sync-status" class="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">Neural Link: Active | 143 FPS</span>
+            <span class="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">Neural Link: Active | 143 FPS</span>
         </div>
         <div id="logs" class="mt-4 text-[9px] font-mono h-32 overflow-hidden text-cyan-900 leading-tight">> System Ready...</div>
     </div>
-
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full max-w-2xl px-10">
-        <h2 id="luna-msg" class="text-white text-2xl mb-8 italic drop-shadow-2xl">Luna: Czekam na sygnał, Dominik...</h2>
-        <button onclick="startVoice()" class="px-16 py-6 bg-cyan-600/20 border-2 border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition-all uppercase text-sm shadow-[0_0_50px_rgba(0,212,255,0.4)]">
-            🎤 Aktywuj Głos (Jarvis)
-        </button>
+        <h2 id="luna-msg" class="text-white text-2xl mb-8 italic drop-shadow-2xl text-white">Luna: Czekam na sygnał, Dominik...</h2>
+        <button onclick="startVoice()" class="px-16 py-6 bg-cyan-600/20 border-2 border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition-all uppercase text-sm shadow-[0_0_50px_rgba(0,212,255,0.4)]"> Aktywuj Głos (Jarvis) </button>
     </div>
-
-    <a href="index.html" class="absolute top-8 right-8 hud-glass p-4 rounded-xl text-[10px] uppercase font-bold hover:bg-cyan-500/20 transition-all">
-        🏠 Wyjdź do Bazy
-    </a>
-
     <div id="three-container"></div>
-
     <script>
-        // POBIERANIE ADRESU Z LOCALSTORAGE (Ustawionego w Launcherze)
         const NGROK_URL = localStorage.getItem('active_ngrok');
-        let scene, camera, renderer, current3DObject, knowledgeBase = {}, currentMode = 'explorer';
-
-        if (!NGROK_URL) {
-            alert("Brak połączenia z rdzeniem AI. Wróć do bazy i podaj adres NGROK.");
-            window.location.href = "index.html";
-        }
-
+        let scene, camera, renderer, current3DObject;
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 30000);
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('three-container').appendChild(renderer.domElement);
-
-            // Gwiezdny pył (15k gwiazd)
             const starGeo = new THREE.BufferGeometry();
             const starPos = [];
             for(let i=0; i<15000; i++) starPos.push((Math.random()-0.5)*15000, (Math.random()-0.5)*15000, (Math.random()-0.5)*15000);
             starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
             scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.8})));
-
-            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-            const sun = new THREE.DirectionalLight(0xffffff, 1.2);
-            sun.position.set(500, 1000, 500);
-            scene.add(sun);
-
-            // Startowy fly-in
-            camera.position.set(0, 1000, 5000);
-            gsap.to(camera.position, { z: 1200, y: 300, duration: 4, ease: "power4.out" });
-
-            fetch('warmia_knowledge.json').then(r => r.json()).then(d => knowledgeBase = d);
-            initMediaPipe();
+            camera.position.set(0, 300, 1200);
             animate();
-            log("> POŁĄCZONO PRZEZ: " + NGROK_URL);
         }
-
-        window.switchLoc = function(loc) {
-            if(!ALL_SECTORS[loc]) return;
-            log(`> SKOK DO: ${loc.toUpperCase()}`);
-            if(current3DObject) scene.remove(current3DObject);
-            
-            const target = ALL_SECTORS[loc];
-            // PŁYNNE PRZEJŚCIE KAMERY (GSAP)
-            gsap.to(camera.position, { 
-                x: target.pos.x, y: target.pos.y + 500, z: target.pos.z + 1200, 
-                duration: 3.5, ease: "power3.inOut" 
-            });
-
-            // WIEDZA DUALNA (Expert/Explorer)
-            const fact = knowledgeBase[loc];
-            const textToSay = currentMode === 'expert' ? fact.expert : fact.explorer;
-            document.getElementById('luna-msg').innerText = "Luna: " + textToSay;
-            
-            if(loc === 'olsztyn') current3DObject = window.loadWarmiaTerrain(scene);
-            else {
-                const geo = new THREE.SphereGeometry(200, 32, 32);
-                const mat = new THREE.MeshStandardMaterial({ color: target.color, wireframe: true });
-                current3DObject = new THREE.Mesh(geo, mat);
-                current3DObject.position.set(target.pos.x, target.pos.y, target.pos.z);
-                scene.add(current3DObject);
-            }
-        };
-
-        async function startVoice() {
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = 'pl-PL';
-            recognition.onstart = () => { gsap.to("#luna-aether", { opacity: 1, scale: 1.2, duration: 1, repeat: -1, yoyo: true }); };
-            recognition.onend = () => { gsap.to("#luna-aether", { opacity: 0 }); };
-            recognition.onresult = async (event) => {
-                const text = event.results[0][0].transcript;
-                log(`> TY: "${text}"`);
-                try {
-                    const res = await fetch(`${NGROK_URL}/process-command`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ prompt: text })
-                    });
-                    const data = await res.json();
-                    document.getElementById('luna-msg').innerText = "Luna: " + data.reply;
-                    if(data.action === 'nav') switchLoc(data.target);
-                    if(data.action === 'mode_change') currentMode = data.mode;
-                } catch(e) { log("! BŁĄD KOMUNIKACJI Z AI"); }
-            };
-            recognition.start();
-        }
-
-        function initMediaPipe() {
-            const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-            hands.setOptions({ maxNumHands: 1, minDetectionConfidence: 0.8 });
-            hands.onResults(results => {
-                if (results.multiHandLandmarks && results.multiHandLandmarks[0]) {
-                    const finger = results.multiHandLandmarks[0][8]; // Palec wskazujący
-                    if(current3DObject) {
-                        current3DObject.rotation.y = (finger.x - 0.5) * 5;
-                        current3DObject.rotation.x = (finger.y - 0.5) * 2;
-                    }
-                }
-            });
-            new Camera(document.getElementById('webcam'), {
-                onFrame: async () => { await hands.send({image: document.getElementById('webcam')}); }
-            }).start();
-        }
-
-        function log(msg) {
-            const l = document.getElementById('logs');
-            l.innerHTML += `<br>> ${msg}`;
-            l.scrollTop = l.scrollHeight;
-        }
-
         function animate() { requestAnimationFrame(animate); renderer.render(scene, camera); }
         window.onload = init;
     </script>
