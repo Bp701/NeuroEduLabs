@@ -1,96 +1,102 @@
-<!DOCTYPE html><html lang="pl"><head>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
     <meta charset="UTF-8">
-    <title>COPERNIX OS | ANDROMEDA BRIDGE 7.0</title>
+    <title>COPERNIX | BRIDGE 12.0</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-
-    <script src="sector_data.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="warmia_module.js"></script>
-    <script src="space_module.js"></script>
-
+    <script src="world_data.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; color: #00d4ff; }
-        .hud-glass { background: rgba(0, 10, 25, 0.85); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(15px); }
-        #video-input { position: absolute; bottom: 20px; right: 20px; width: 160px; border-radius: 10px; border: 2px solid #00d4ff; transform: scaleX(-1); }
-    </style></head><body>
-    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded border-l-4 border-cyan-500">
-        <h1 class="text-xl font-bold tracking-widest uppercase text-white">Copernix OS</h1>
-        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-800 h-32 overflow-hidden leading-tight">> SYSTEM ONLINE...</div>
+        .hud-glass { background: rgba(0, 10, 25, 0.95); border: 1px solid #00d4ff; backdrop-filter: blur(25px); }
+        #webcam { position: absolute; bottom: 20px; right: 20px; width: 180px; border: 2px solid #00d4ff; border-radius: 12px; transform: scaleX(-1); opacity: 0.6; z-index: 100; }
+        .loading-pulse { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0px #00d4ff; } 50% { box-shadow: 0 0 20px #00d4ff; } 100% { box-shadow: 0 0 0px #00d4ff; } }
+    </style>
+</head>
+<body>
+    <video id="webcam" autoplay></video>
+
+    <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded border-l-4 border-cyan-500 shadow-2xl">
+        <h1 class="text-3xl font-black italic tracking-tighter text-white uppercase">Copernix OS</h1>
+        <p class="text-[10px] font-bold text-cyan-500 uppercase tracking-widest mt-1">Neural Sync: Active | 143 FPS</p>
+        <div id="logs" class="mt-4 text-[9px] font-mono h-24 overflow-hidden text-cyan-900 leading-tight">> System Ready...</div>
     </div>
 
-    <div id="sector-menu" class="absolute top-8 right-8 hud-glass p-4 w-64 z-50 text-white">
-        <p class="text-[10px] text-center mb-4 opacity-50 uppercase tracking-widest">Nawigacja Ręczna</p>
-        <button onclick="switchLoc('olsztyn')" class="w-full p-2 mb-2 bg-cyan-900/20 border border-cyan-800 hover:border-cyan-400 transition text-xs uppercase">🏰 Olsztyn 3D</button>
-        <button onclick="switchLoc('andromeda')" class="w-full p-2 mb-2 bg-cyan-900/20 border border-cyan-800 hover:border-cyan-400 transition text-xs uppercase">🌌 Andromeda</button>
-        <button onclick="switchLoc('earth')" class="w-full p-2 bg-cyan-900/20 border border-cyan-800 hover:border-cyan-400 transition text-xs uppercase">🌍 Orbita</button>
-    </div>
-
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full">
-        <h2 id="luna-msg" class="text-white text-xl mb-6 italic font-light drop-shadow-lg">Luna: Wybierz tryb sterowania...</h2>
-        <button onclick="startVoice()" class="px-12 py-5 bg-cyan-600/20 border-2 border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition uppercase tracking-widest text-sm shadow-[0_0_40px_rgba(0,212,255,0.2)]">
-            🎤 Komenda Głosowa
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full max-w-xl">
+        <h2 id="luna-msg" class="text-white text-xl mb-6 italic font-light drop-shadow-2xl">Luna: Czekam na komendę...</h2>
+        <button id="mic-btn" onclick="startVoice()" class="px-12 py-5 bg-cyan-600/20 border-2 border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition-all uppercase text-xs">
+            🎤 Aktywuj Lunę
         </button>
     </div>
-
-    <video id="video-input" autoplay></video>
 
     <div id="three-container"></div>
 
     <script>
-        const NGROK_URL = "https://unauthentic-kylah-exiguously.ngrok-free.dev";
-        let scene, camera, renderer, earth, current3DObject;
+        const NGROK_URL = localStorage.getItem('active_ngrok');
+
+        if (!NGROK_URL) {
+            alert("BŁĄD: Brak adresu tunelu ngrok! Powrót do startu.");
+            window.location.href = "index.html";
+        }
+
+        let scene, camera, renderer, earth, current3DObject, isProcessing = false;
 
         function init() {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 10000);
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 20000);
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('three-container').appendChild(renderer.domElement);
 
-            scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-            const sun = new THREE.DirectionalLight(0xffffff, 1);
+            // Gwiezdny pył
+            const starGeo = new THREE.BufferGeometry();
+            const starPos = [];
+            for(let i=0; i<15000; i++) starPos.push((Math.random()-0.5)*10000, (Math.random()-0.5)*10000, (Math.random()-0.5)*10000);
+            starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+            scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.8})));
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+            const sun = new THREE.DirectionalLight(0xffffff, 1.2);
             sun.position.set(500, 1000, 500);
             scene.add(sun);
 
-            const earthGeo = new THREE.SphereGeometry(100, 32, 32);
-            const earthMat = new THREE.MeshStandardMaterial({ color: 0x0044ff, wireframe: true });
-            earth = new THREE.Mesh(earthGeo, earthMat);
-            scene.add(earth);
-            camera.position.z = 400;
+            // IMMERSIVE ZOOM START
+            camera.position.set(0, 0, 5000);
+            gsap.to(camera.position, { z: 500, duration: 4, ease: "power4.out" });
 
-            initMediaPipe(); // Start gestów
+            initMediaPipe();
             animate();
-            log("> ANDROMEDA BRIDGE 7.0: GŁOS + GESTY + MANUAL");
+            log("> MOSTEK ZALUDNIONY. SYSTEM GOTOWY.");
         }
 
-        // --- TRYB 1: MANUALNY (PRZYCISKI) ---
         window.switchLoc = function(loc) {
             log(`> SKOK DO: ${loc.toUpperCase()}`);
             if(current3DObject) scene.remove(current3DObject);
-            earth.visible = (loc === 'earth');
-
-            if(loc === 'olsztyn' && window.loadWarmiaTerrain) {
+            if(loc === 'olsztyn') {
+                document.getElementById('luna-msg').innerText = "Luna: Renderuję Olsztyn 3D. Przelot nad Zamkiem...";
                 current3DObject = window.loadWarmiaTerrain(scene);
-                gsap.to(camera.position, { x: 0, y: 500, z: 800, duration: 2 });
+                gsap.to(camera.position, { x: 0, y: 600, z: 1200, duration: 3, ease: "power2.inOut" });
             }
-            if(loc === 'andromeda' && window.loadSpaceModule) {
-                current3DObject = window.loadSpaceModule(scene, 'andromeda');
-                gsap.to(camera.position, { x: 0, y: 0, z: 2000, duration: 3 });
-            }
-            if(loc === 'earth') gsap.to(camera.position, { x: 0, y: 0, z: 400, duration: 2 });
         };
 
-        // --- TRYB 2: GŁOSOWY ---
         async function startVoice() {
+            if(isProcessing) return; // ANTI-SPAM
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'pl-PL';
+            recognition.onstart = () => { 
+                isProcessing = true;
+                document.getElementById('mic-btn').classList.add('loading-pulse');
+                document.getElementById('luna-msg').innerText = "Luna: Słucham...";
+            };
             recognition.onresult = async (event) => {
                 const text = event.results[0][0].transcript;
-                log(`> TY: "${text}"`);
+                log(`> TY: \"${text}\"`);
                 try {
                     const res = await fetch(`${NGROK_URL}/process-command`, {
                         method: 'POST',
@@ -100,41 +106,43 @@
                     const data = await res.json();
                     document.getElementById('luna-msg').innerText = "Luna: " + data.reply;
                     if(data.action === 'nav') switchLoc(data.target);
-                } catch(e) { log("! BŁĄD NGROK"); }
+                } catch(e) { log("! BŁĄD KOMUNIKACJI"); }
+            };
+            recognition.onend = () => {
+                isProcessing = false;
+                document.getElementById('mic-btn').classList.remove('loading-pulse');
             };
             recognition.start();
         }
 
-        // --- TRYB 3: GESTY (MAGICZNA RÓŻDŻKA) ---
         function initMediaPipe() {
             const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+            hands.setOptions({ maxNumHands: 1, minDetectionConfidence: 0.8 });
             hands.onResults(results => {
                 if (results.multiHandLandmarks && results.multiHandLandmarks[0]) {
-                    const hand = results.multiHandLandmarks[0];
-                    // Obracanie modelem za pomocą palca wskazującego
+                    const finger = results.multiHandLandmarks[0][8];
                     if(current3DObject) {
-                        current3DObject.rotation.y = (hand[8].x - 0.5) * 4;
-                        current3DObject.rotation.x = (hand[8].y - 0.5) * 4;
+                        current3DObject.rotation.y = (finger.x - 0.5) * 6;
+                        current3DObject.rotation.x = (finger.y - 0.5) * 3;
                     }
                 }
             });
-            const cameraPipe = new Camera(document.getElementById('video-input'), {
-                onFrame: async () => { await hands.send({image: document.getElementById('video-input')}); }
-            });
-            cameraPipe.start();
+            new Camera(document.getElementById('webcam'), {
+                onFrame: async () => { await hands.send({image: document.getElementById('webcam')}); }
+            }).start();
         }
 
         function log(msg) {
             const l = document.getElementById('logs');
-            l.innerHTML += `<br>${msg}`;
+            l.innerHTML += `<br>> ${msg}`;
             l.scrollTop = l.scrollHeight;
         }
 
         function animate() {
             requestAnimationFrame(animate);
-            if(earth.visible) earth.rotation.y += 0.002;
             renderer.render(scene, camera);
         }
         window.onload = init;
-    </script></body></html>
+    </script>
+</body>
+</html>
