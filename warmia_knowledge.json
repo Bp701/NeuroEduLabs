@@ -1,24 +1,34 @@
 {
-  "olsztyn": "Renderuję teren Warmii i Mazur. To Twój Lokalny Hub, zbudowany na prawdziwych danych GIS.",
-  "andromeda": "Mglawica Andromeda – 2.5 miliona lat świetlnych stąd. Lecz Ty jesteś tu i teraz, Dominiku.",
-  "about_project": "NeuroEduLabs to ekosystem AI dla dzieci z SPD i ADHD. Wykorzystujemy Edge AI (Qwen 2.5), aby chronić dane przed chmurą.",
-  "technology": {
-    "voice": "Jarvis Mode: Twój głos + lokalny model Ollama = Zero opóźnień.",
-    "gestures": "Magiczna Różdżka (MediaPipe): Obracaj modele 3D palcem wskazującym.",
-    "security": "RODO Shield: Żaden bajt nie opuszcza MSI. Wszystko działa offline."
-  },
-  "founder": {
-    "name": "Piotr Brodziński (User Zero)",
-    "role": "Inżynier Projektu, Architekt Systemu",
-    "vision": "Zbudować narzędzie, które nie śledzi dzieci, tylko im pomaga."
-  },
-  "valuation": {
-    "amount": "2.25M PLN",
-    "description": "Wycena własności intelektualnej (IP Assets): Qwen 2.5 Coder + Luna Mini Coach V2 + Copernix OS."
-  },
-  "status": "TRL 7 – System Gold Master. Gotowy do pilotów w szkołach.",
-  "emotional_context": {
-    "luna_personality": "Ciepła, wspierająca, nigdy nie ocenia. Luna jest jak młodsza siostra, która zawsze słucha.",
-    "dominik_story": "Dominik, Twój projekt to nie tylko kod. To Miłość do Twójki dzieci, które inspirują każdą funkcję. Tata, który buduje przyszłość."
-  }
+    "sun": {
+        "explorer": "Slonce to nasza wielka, goraca zarówka. Jest tak ogromne, ze w srodku zmieściloby sie milion planet takich jak Ziemia!",
+        "expert": "Gwiazda typu widmowego G2V. Energia generowana jest w jadrze poprzez fuzje termojadra wodoru w hel pod cisnieniem 250 mld atmosfer."
+    },
+    "earth": {
+        "explorer": "Ziemia to nasz blekitny dom. To jedyne miejsce w kosmosie, gdzie wiemy na 100 procent, ze istnieje pizza i psy!",
+        "expert": "Trzecia planeta od Slonca. Jedyny znany obiekt astronomiczny z aktywna biosfera i tektoniką plyt. Atmosfera: 78% azot, 21% tlen."
+    },
+    "olsztyn": {
+        "explorer": "To baza Mikolaja Kopernika! Zbudowal tu na scianie zamku tablice, zeby sledzic slonce i udowodnic, ze Ziemia sie kreci.",
+        "expert": "Sektor Warmia. Siedziba Kapituly Warminskiej. Mikolaj Kopernik pelnil tu funkcje administratora i dowodzil obrona zamku w 1521 roku."
+    },
+    "mars": {
+        "explorer": "Czerwona planeta z najwiekszym wulkanem w galaktyce! Góra Olympus Mons jest trzy razy wyzsza niz nasz Mount Everest.",
+        "expert": "Czwarta planeta Ukladu Slonecznego. Cisnienie atmosferyczne wynosi zaledwie 0,6% ziemskiego. Glówny cel kolonizacji inzynieryjnej."
+    },
+    "parrots": {
+        "explorer": "Papugi Zako to latajace super-mózgi. Sa tak madre, ze potrafia nie tylko powtarzac slowa, ale naprawde logicznie myslec!",
+        "expert": "Psittacus erithacus wykazuje niezwykle zdolnosci kognitywne. Struktura mózgu (Nidopallium) pozwala na operacje logiczne na poziomie 5-letniego dziecka."
+    },
+    "hancza": {
+        "explorer": "Najglebsze jezioro w Polsce! Wyryl je wielki lodowiec, który tysiace lat temu przejechal przez Polske jak gigantyczny spychacz.",
+        "expert": "Jezioro rynnowe o glebokosci 108.5m. Akwen oligotroficzny o charakterystyce wód wysokogórskich. Idealny poligon dla nurkowania technicznego."
+    },
+    "andromeda": {
+        "explorer": "Nasza sasiadka z kosmosu. Ma bilion gwiazd i pedzi w nasza strone, zeby za kilka miliardów lat polaczyc sie z nasza galaktyka.",
+        "expert": "Galaktyka spiralna M31, odlegla o 2.5 mln lat swietlnych. Zawiera okolo 10^12 gwiazd. Przesuniecie ku fioletowi wskazuje na wektor kolizyjny."
+    },
+    "brain": {
+        "explorer": "Twój osobisty Jarvis! Przetwarzam miliony danych lokalnie na Twoim laptopie, abys byl bezpieczny i mógl tworzyc magie.",
+        "expert": "Edge AI Engine. Inferencja modelu Qwen 2.5 Coder 7B odbywa sie lokalnie. 100% RODO Shield - brak transmisji danych biometrycznych do chmury."
+    }
 }
