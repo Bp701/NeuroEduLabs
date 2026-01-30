@@ -2,14 +2,14 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>COPERNIX | SYSTEM BEHAWIORALNY SP</title>
+    <title>COPERNIX | LUNA COACH v2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         body { background: #020617; color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
         .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(139, 92, 246, 0.4); }
-        #breathing-circle { width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); opacity: 0.3; }
+        #breathing-circle { width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); opacity: 0.3; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
@@ -20,7 +20,7 @@
     </div>
 
     <header class="mb-12">
-        <h1 id="header-title" class="text-6xl font-black italic text-purple-500 uppercase">System Maintenance</h1>
+        <h1 id="header-title" class="text-6xl font-black italic text-purple-500 uppercase tracking-tighter">Luna Coach v2</h1>
         <p class="text-slate-400 uppercase tracking-widest text-sm mt-2 font-bold italic">Interwencja Behawioralna SP</p>
     </header>
 
@@ -30,19 +30,19 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-        <button onclick="runProtocol('REGENERACJA SENSORYCZNA', 240, '#22d3ee')" class="glass p-10 rounded-[3rem] hover:bg-cyan-900/20 transition-all border-l-4 border-cyan-500">
+        <button onclick="runProtocol('REGENERACJA', 240, '#22d3ee')" class="glass p-10 rounded-[3rem] hover:bg-cyan-900/20 transition-all border-l-4 border-cyan-500">
             <h3 class="text-3xl font-bold uppercase text-cyan-400">🔋 Regeneracja</h3>
-            <p class="text-xs opacity-60 mt-1 italic text-white">Wyciszenie klasy (4 minuty)</p>
+            <p class="text-sm opacity-60 mt-1 italic text-white">Wyciszenie klasy (4 minuty)</p>
         </button>
-        <button onclick="runProtocol('AKTYWACJA FOCUSU', 180, '#f59e0b')" class="glass p-10 rounded-[3rem] hover:bg-amber-900/20 transition-all border-l-4 border-amber-500">
+        <button onclick="runProtocol('DOŁADOWANIE', 180, '#f59e0b')" class="glass p-10 rounded-[3rem] hover:bg-amber-900/20 transition-all border-l-4 border-amber-500">
             <h3 class="text-3xl font-bold uppercase text-amber-500">⚡ Doładowanie</h3>
-            <p class="text-xs opacity-60 mt-1 italic text-white">Przygotowanie do lekcji (3 minuty)</p>
+            <p class="text-sm opacity-60 mt-1 italic text-white">Focus przed zadaniem (3 minuty)</p>
         </button>
     </div>
 
-    <div class="mt-16 opacity-50 flex items-center gap-3">
+    <div class="mt-16 opacity-50 flex items-center gap-3 justify-center">
         <span class="px-3 py-1 border border-white rounded font-bold">SPACJA</span>
-        <p class="text-[10px] uppercase font-bold text-white italic">Fizyczny bezpiecznik: Natychmiastowe wyciszenie klasy</p>
+        <p class="text-[10px] uppercase font-bold text-white italic">Wyciszenie klasy (Emergency Silence)</p>
     </div>
 
     <script>
