@@ -9,18 +9,18 @@
     <style>
         body { background: #020617; color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
         .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(139, 92, 246, 0.4); }
-        #breathing-circle { width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); opacity: 0.3; border: 2px solid rgba(139, 92, 246, 0.3); }
+        #breathing-circle { width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); opacity: 0.3; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
 
     <div id="panic-overlay" class="fixed inset-0 bg-black z-[100] hidden flex flex-col items-center justify-center">
         <h1 class="text-6xl font-bold text-cyan-500 uppercase tracking-[1em] animate-pulse">Tryb Ciszy</h1>
-        <p class="text-slate-600 mt-4 italic text-xl">Wygaszono wszystkie bodźce. Czas na oddech...</p>
+        <p class="text-slate-600 mt-4 italic text-xl">Wyciszono bodźce. Czas na oddech...</p>
     </div>
 
     <header class="mb-12">
-        <h1 id="mission-title" class="text-6xl font-black italic text-purple-500 uppercase tracking-tighter">System Maintenance</h1>
+        <h1 id="header-title" class="text-6xl font-black italic text-purple-500 uppercase tracking-tighter">System Maintenance</h1>
         <p class="text-slate-400 uppercase tracking-widest text-sm mt-2 font-bold italic">Operator: Dominik // Protokół: Samoregulacja v2</p>
     </header>
 
@@ -30,28 +30,25 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-        <button onclick="startMission('REGENERACJA RDZENIA', 240, '#22d3ee')" class="glass p-10 rounded-[3rem] hover:bg-cyan-900/20 transition-all border-l-4 border-cyan-500 group">
+        <button onclick="runProtocol('REGENERACJA RDZENIA', 240, '#22d3ee')" class="glass p-10 rounded-[3rem] hover:bg-cyan-900/20 transition-all border-l-4 border-cyan-500">
             <h3 class="text-3xl font-bold uppercase text-cyan-400">🔋 Regeneracja</h3>
             <p class="text-xs opacity-60 mt-1 italic">Wyciszenie i chłodzenie układu (4 min)</p>
         </button>
-        <button onclick="startMission('DOŁADOWANIE MOCY', 180, '#f59e0b')" class="glass p-10 rounded-[3rem] hover:bg-amber-900/20 transition-all border-l-4 border-amber-500 group">
+        <button onclick="runProtocol('DOŁADOWANIE MOCY', 180, '#f59e0b')" class="glass p-10 rounded-[3rem] hover:bg-amber-900/20 transition-all border-l-4 border-amber-500">
             <h3 class="text-3xl font-bold uppercase text-amber-500">⚡ Doładowanie</h3>
-            <p class="text-xs opacity-60 mt-1 italic">Aktywacja focusu przed zadaniem (3 min)</p>
+            <p class="text-xs opacity-60 mt-1 italic">Aktywacja focusu przed misją (3 min)</p>
         </button>
     </div>
 
-    <div class="mt-16 flex items-center gap-4 opacity-50 justify-center">
-        <span class="px-4 py-2 border border-white rounded font-bold text-sm uppercase">Spacja</span>
-        <p class="text-xs uppercase tracking-widest font-bold text-white italic">Fizyczny bezpiecznik: Natychmiastowe wyciszenie klasy</p>
-    </div>
+    <p class="mt-16 text-[10px] text-slate-600 uppercase tracking-[0.5em] font-bold">Naciśnij [SPACJA] dla natychmiastowego wyciszenia klasy</p>
 
     <script>
         let interval;
-        function startMission(name, duration, color) {
+        function runProtocol(name, duration, color) {
             clearInterval(interval);
             let timeLeft = duration;
-            document.getElementById('mission-title').innerText = name;
-            document.getElementById('mission-title').style.color = color;
+            document.getElementById('header-title').innerText = name;
+            document.getElementById('header-title').style.color = color;
             gsap.to("#breathing-circle", { scale: 1.6, opacity: 0.8, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
             
             interval = setInterval(() => {
