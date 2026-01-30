@@ -47,12 +47,22 @@
 
     <script>
         function unlock() {
-            if(document.getElementById('pin').value === "2026") {
+                    const pin = document.getElementById('pin').value;
+        if(pin === "2026") {
+            // PROMPT O NGROK - kluczowe!
+            let addr = prompt("PODAJ PELNY ADRES NGROK (np. https://xyz.ngrok-free.dev):", localStorage.getItem('active_ngrok') || "");
+            
+            if(addr) {
+                // Czyscimy adres z koncowych ukosnikow
+                if(addr.endsWith('/')) addr = addr.slice(0, -1);
+                localStorage.setItem('active_ngrok', addr);
+                
                 gsap.to("#pin-panel", { opacity: 0, scale: 0.9, duration: 0.5, onComplete: () => {
                     document.getElementById('pin-panel').style.display = 'none';
                     document.getElementById('main-hub').classList.remove('hidden');
-                    gsap.from("#main-hub", { opacity: 0, y: 30, duration: 1 });
                 }});
-            } else { alert("Nieautoryzowany dostep!"); }
-        }
+            } else {
+                alert("Adres ngrok jest wymagany do polaczenia z AI!");
+            }
+        } else { alert("Nieautoryzowany dostep!"); }
     </script></body></html>
