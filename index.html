@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
+<!DOCTYPE html><html lang="pl"><head>
     <meta charset="UTF-8">
     <title>NeuroEduLabs | Copernix OS Launcher</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,50 +10,49 @@
         .audit-shield { border-left: 4px solid #f59e0b; box-shadow: 0 0 30px rgba(245, 158, 11, 0.1); }
         .scan-line { height: 2px; background: #00d4ff; position: absolute; width: 100%; top: 0; animation: scan 3s infinite linear; }
         @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(250px); } }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    </style></head><body class="min-h-screen flex flex-col items-center justify-center p-6 text-white">
     <div id="pin-panel" class="glass p-12 text-center w-full max-w-md rounded-[3rem] relative overflow-hidden">
         <div class="scan-line"></div>
-        <h1 class="text-6xl font-black italic mb-2 tracking-tighter text-white uppercase">COPERNIX</h1>
-        <p class="text-[10px] tracking-[0.5em] uppercase opacity-40 mb-10 text-white">NeuroEduLabs Intelligence</p>
-        <input type="password" id="pin" placeholder="PIN: 2026" class="w-full bg-black/50 border border-cyan-900 p-4 rounded-2xl text-center text-2xl tracking-[0.5em] outline-none focus:border-cyan-500 mb-6 text-white">
-        <button onclick="unlock()" class="w-full py-5 bg-cyan-600 hover:bg-cyan-400 text-black font-bold rounded-2xl uppercase tracking-widest transition-all">Skanuj i Uruchom</button>
+        <h1 class="text-6xl font-black italic mb-2 tracking-tighter">COPERNIX</h1>
+        <p class="text-[10px] tracking-[0.5em] uppercase opacity-40 mb-10">NeuroEduLabs Intelligence</p>
+        <input type="password" id="pin" placeholder="KOD DOSTEPU: 2026" class="w-full bg-black/50 border border-cyan-900 p-4 rounded-2xl text-center text-2xl tracking-[0.5em] outline-none focus:border-cyan-500 mb-6 text-white">
+        <button onclick="unlock()" class="w-full py-5 bg-cyan-600 hover:bg-cyan-400 text-black font-bold rounded-2xl uppercase tracking-widest transition-all">Autoryzuj System</button>
     </div>
 
     <div id="main-hub" class="hidden w-full max-w-6xl animate-in fade-in duration-1000">
         <div class="audit-shield glass p-8 mb-10 grid grid-cols-1 md:grid-cols-3 gap-6 text-[11px] rounded-3xl">
-            <div><p class="text-amber-500 font-bold uppercase mb-1">Inżynier:</p><p class="text-white text-sm" id="meta-founder">Piotr Brodziński (User Zero)</p></div>
-            <div><p class="text-amber-500 font-bold uppercase mb-1">Status:</p><p class="text-green-400 text-sm font-bold">TRL 7 - System Gold Master</p></div>
-            <div class="text-right"><p class="text-amber-500 font-bold uppercase mb-1">Wycena IP:</p><p class="text-white text-lg font-bold">2.25M PLN</p></div>
+            <div><p class="text-amber-500 font-bold uppercase mb-1">Inzynier Projektu:</p><p class="text-white text-sm">Piotr Brodzinski (User Zero)</p></div>
+            <div><p class="text-amber-500 font-bold uppercase mb-1">Misja:</p><p class="text-white text-sm">Suwerenne AI dla neurorożnorodnosci</p></div>
+            <div class="text-right"><p class="text-amber-500 font-bold uppercase mb-1">Wycena IP / TRL:</p><p class="text-white text-lg font-bold">2.25M PLN | TRL 7</p></div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <a href="bridge.html" class="glass p-12 rounded-[3rem] text-center border-t-2 border-cyan-500 hover:scale-105 transition-all group">
-                <div class="text-7xl mb-6 group-hover:animate-bounce">🛰️</div>
-                <h2 class="text-3xl font-bold uppercase text-white">Andromeda Bridge</h2>
-                <p class="text-xs opacity-50 mt-2 text-cyan-200">Głos + Gesty + 3D Olsztyn</p>
+                <div class="text-7xl mb-6">🛰️</div>
+                <h2 class="text-3xl font-bold uppercase tracking-widest">Andromeda Bridge</h2>
+                <p class="text-xs opacity-50 mt-2 italic">Gesty + Glos + 3D Olsztyn</p>
             </a>
+            <div class="glass p-12 rounded-[3rem] text-center opacity-30 grayscale cursor-not-allowed">
+                <div class="text-7xl mb-6">🚀</div>
+                <h2 class="text-3xl font-bold uppercase tracking-widest">Luna Coach</h2>
+                <p class="text-xs mt-2 italic">Tryb Regulacji (V2)</p>
+            </div>
+            <div class="glass p-12 rounded-[3rem] text-center opacity-30 grayscale cursor-not-allowed">
+                <div class="text-7xl mb-6">🧠</div>
+                <h2 class="text-3xl font-bold uppercase tracking-widest">Child Emotion</h2>
+                <p class="text-xs mt-2 italic">Diagnostyka AI</p>
+            </div>
         </div>
     </div>
 
     <script>
         function unlock() {
-            const pin = document.getElementById('pin').value;
-            if(pin === "2026") {
-                let currentNgrok = localStorage.getItem('active_ngrok') || "";
-                let addr = prompt("PODAJ ADRES TUNELU NGROK (np. https://abcd.ngrok-free.dev) lub zostaw puste:", currentNgrok);
-                
-                if (addr && addr.includes('ngrok')) {
-                    localStorage.setItem('active_ngrok', addr.trim());
-                }
-
+            if(document.getElementById('pin').value === "2026") {
                 gsap.to("#pin-panel", { opacity: 0, scale: 0.9, duration: 0.5, onComplete: () => {
                     document.getElementById('pin-panel').style.display = 'none';
                     document.getElementById('main-hub').classList.remove('hidden');
+                    gsap.from("#main-hub", { opacity: 0, y: 30, duration: 1 });
                 }});
-            } else { alert("BŁĄD PIN."); }
+            } else { alert("Nieautoryzowany dostep!"); }
         }
-    </script>
-</body>
-</html>
+    </script></body></html>
