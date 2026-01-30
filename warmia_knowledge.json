@@ -1,0 +1,24 @@
+{
+  "olsztyn": "Renderuję teren Warmii i Mazur. To Twój Lokalny Hub, zbudowany na prawdziwych danych GIS.",
+  "andromeda": "Mglawica Andromeda – 2.5 miliona lat świetlnych stąd. Lecz Ty jesteś tu i teraz, Dominiku.",
+  "about_project": "NeuroEduLabs to ekosystem AI dla dzieci z SPD i ADHD. Wykorzystujemy Edge AI (Qwen 2.5), aby chronić dane przed chmurą.",
+  "technology": {
+    "voice": "Jarvis Mode: Twój głos + lokalny model Ollama = Zero opóźnień.",
+    "gestures": "Magiczna Różdżka (MediaPipe): Obracaj modele 3D palcem wskazującym.",
+    "security": "RODO Shield: Żaden bajt nie opuszcza MSI. Wszystko działa offline."
+  },
+  "founder": {
+    "name": "Piotr Brodziński (User Zero)",
+    "role": "Inżynier Projektu, Architekt Systemu",
+    "vision": "Zbudować narzędzie, które nie śledzi dzieci, tylko im pomaga."
+  },
+  "valuation": {
+    "amount": "2.25M PLN",
+    "description": "Wycena własności intelektualnej (IP Assets): Qwen 2.5 Coder + Luna Mini Coach V2 + Copernix OS."
+  },
+  "status": "TRL 7 – System Gold Master. Gotowy do pilotów w szkołach.",
+  "emotional_context": {
+    "luna_personality": "Ciepła, wspierająca, nigdy nie ocenia. Luna jest jak młodsza siostra, która zawsze słucha.",
+    "dominik_story": "Dominik, Twój projekt to nie tylko kod. To Miłość do Twójki dzieci, które inspirują każdą funkcję. Tata, który buduje przyszłość."
+  }
+}
