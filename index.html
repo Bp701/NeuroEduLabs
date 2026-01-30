@@ -2,7 +2,8 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>COPERNIX | PANEL NAUCZYCIELA SP v2.6</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroEduLabs | Teacher Hub v2.6 SP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
@@ -10,14 +11,15 @@
         body { background: #020617; color: #00d4ff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
         .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(0, 212, 255, 0.3); }
         .audit-shield { border-left: 4px solid #f59e0b; box-shadow: 0 0 30px rgba(245, 158, 11, 0.1); }
+        .glow-active { box-shadow: 0 0 50px rgba(34, 211, 238, 0.1); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-white text-center">
 
-    <div id="pin-panel" class="glass p-12 text-center w-full max-w-md rounded-[3rem] relative shadow-2xl">
+    <div id="pin-panel" class="glass p-12 text-center w-full max-w-md rounded-[3rem] relative shadow-2xl z-50">
         <h1 class="text-5xl font-black italic mb-2 tracking-tighter">COPERNIX SP</h1>
         <p class="text-[10px] tracking-[0.5em] uppercase opacity-40 mb-10 font-bold">Autoryzacja Nauczyciela</p>
-        <input type="password" id="pin" placeholder="KOD: 2026" class="w-full bg-black/50 border border-cyan-900 p-4 rounded-2xl text-center text-2xl tracking-[0.8em] outline-none focus:border-cyan-500 mb-6 text-white font-bold">
+        <input type="password" id="pin" placeholder="PIN: 2026" class="w-full bg-black/50 border border-cyan-900 p-4 rounded-2xl text-center text-2xl tracking-[0.8em] outline-none focus:border-cyan-500 mb-6 text-white font-bold">
         <button onclick="unlock()" class="w-full py-5 bg-cyan-600 hover:bg-cyan-400 text-black font-bold rounded-2xl uppercase tracking-widest transition-all">Uruchom Panel SP</button>
     </div>
 
@@ -25,8 +27,12 @@
         <header class="flex justify-between items-center mb-10 text-left">
             <div class="audit-shield glass p-6 rounded-2xl w-2/3">
                 <p class="text-amber-500 text-[10px] font-bold uppercase tracking-widest mb-1">Inżynier Projektu: Piotr Brodziński (User Zero)</p>
-                <h2 class="text-2xl font-bold uppercase tracking-tighter">Status: TRL 7 Gold Master | 2.25M PLN</h2>
-                <p class="text-cyan-500 text-sm italic">System: Behavioral AI Shield Active</p>
+                <h2 class="text-2xl font-bold uppercase tracking-tighter text-white">Status: TRL 7 Gold Master | 2.25M PLN</h2>
+                <p class="text-cyan-500 text-sm italic font-bold">System: Behavioral AI Shield Active</p>
+            </div>
+            <div class="glass p-6 rounded-2xl text-right">
+                <p class="text-amber-500 text-[10px] font-bold uppercase">Technologia</p>
+                <p class="text-xl font-black italic">Offline Edge AI Shield</p>
             </div>
         </header>
 
@@ -37,7 +43,7 @@
                 <p class="text-[10px] opacity-50 mt-2 italic text-white">Moduł Przedszkolny</p>
             </a>
 
-            <a href="bridge.html" class="glass p-12 rounded-[3rem] border-t-2 border-cyan-500 hover:scale-105 transition-all shadow-[0_0_40px_rgba(34,211,238,0.1)]">
+            <a href="bridge.html" class="glass p-12 rounded-[3rem] border-t-2 border-cyan-500 hover:scale-105 transition-all glow-active">
                 <div class="text-7xl mb-6">🛰️</div>
                 <h3 class="text-3xl font-bold uppercase tracking-widest text-cyan-400">Bridge (v2 SP)</h3>
                 <p class="text-xs opacity-70 mt-2 italic text-white">Lekcja 3D / Inżynieria</p>
@@ -53,14 +59,21 @@
 
     <script>
         function unlock() {
-            if(document.getElementById('pin').value === "2026") {
+            const inputPin = document.getElementById('pin').value;
+            if(inputPin === "2026") {
                 let addr = prompt("PODAJ ADRES NGROK Z TWOJEGO MSI:", localStorage.getItem('active_ngrok') || "");
                 if(addr) {
                     if(addr.endsWith('/')) addr = addr.slice(0, -1);
                     localStorage.setItem('active_ngrok', addr);
-                    document.getElementById('pin-panel').style.display = 'none';
-                    document.getElementById('main-hub').classList.remove('hidden');
+                    
+                    gsap.to("#pin-panel", { opacity: 0, y: -50, duration: 0.5, onComplete: () => {
+                        document.getElementById('pin-panel').style.display = 'none';
+                        document.getElementById('main-hub').classList.remove('hidden');
+                        gsap.from("#main-hub", { opacity: 0, y: 50, duration: 1 });
+                    }});
                 }
+            } else {
+                alert("Odmowa dostępu. Błędny kod PIN.");
             }
         }
     </script>
