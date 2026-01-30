@@ -2,54 +2,55 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>COPERNIX | BRIDGE 12.5 PLATINUM</title>
+    <title>COPERNIX | BRIDGE V2 PLATINUM</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="sector_data.js"></script>
     <script src="warmia_module.js"></script>
     <style>
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Rajdhani', sans-serif; }
-        .hud-glass { background: rgba(0, 10, 25, 0.95); border: 1px solid #00d4ff; backdrop-filter: blur(25px); }
-        #webcam { position: absolute; bottom: 20px; right: 20px; width: 180px; border: 2px solid #00d4ff; border-radius: 12px; transform: scaleX(-1); opacity: 0.6; z-index: 100; }
+        .hud-glass { background: rgba(0, 10, 25, 0.85); border: 1px solid #00d4ff; backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
-    <video id="webcam" autoplay></video>
     <div class="absolute top-8 left-8 hud-glass p-6 w-80 z-50 rounded border-l-4 border-cyan-500 shadow-2xl">
-        <h1 class="text-3xl font-black italic tracking-tighter text-white uppercase">Copernix OS</h1>
-        <div class="flex items-center gap-2 mt-1">
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">Neural Link: Active | 143 FPS</span>
-        </div>
-        <div id="logs" class="mt-4 text-[9px] font-mono h-32 overflow-hidden text-cyan-900 leading-tight">> System Ready...</div>
+        <h1 class="text-2xl font-bold text-white uppercase italic tracking-tighter">Copernix Bridge</h1>
+        <p class="text-cyan-500 text-[10px] font-bold tracking-widest uppercase">Lokalizacja: Olsztyn-Mars Link</p>
+        <div id="logs" class="mt-4 text-[9px] font-mono text-cyan-300 h-20 overflow-hidden leading-tight">> System Ready...</div>
     </div>
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-center w-full max-w-2xl px-10">
-        <h2 id="luna-msg" class="text-white text-2xl mb-8 italic drop-shadow-2xl text-white">Luna: Czekam na sygnał, Dominik...</h2>
-        <button onclick="startVoice()" class="px-16 py-6 bg-cyan-600/20 border-2 border-cyan-500 rounded-full text-white font-bold hover:bg-cyan-500 transition-all uppercase text-sm shadow-[0_0_50px_rgba(0,212,255,0.4)]"> Aktywuj Głos (Jarvis) </button>
+
+    <div class="absolute top-40 left-8 flex flex-col gap-2 z-50">
+        <button onclick="changeSector('olsztyn_zamek')" class="bg-cyan-900/50 border border-cyan-500 p-2 text-[10px] text-white hover:bg-cyan-500 transition uppercase font-bold">🏰 Olsztyn Zamek</button>
+        <button onclick="changeSector('sniardwy_port')" class="bg-cyan-900/50 border border-cyan-500 p-2 text-[10px] text-white hover:bg-cyan-500 transition uppercase font-bold">⛵ Śniardwy</button>
+        <button onclick="changeSector('mars_base')" class="bg-cyan-900/50 border border-cyan-500 p-2 text-[10px] text-white hover:bg-cyan-500 transition uppercase font-bold">🚀 Baza Mars</button>
+        <button onclick="changeSector('deep_space')" class="bg-cyan-900/50 border border-cyan-500 p-2 text-[10px] text-white hover:bg-cyan-500 transition uppercase font-bold">🌌 Kosmos</button>
     </div>
+
     <div id="three-container"></div>
+
     <script>
-        const NGROK_URL = localStorage.getItem('active_ngrok');
-        let scene, camera, renderer, current3DObject;
+        let scene, camera, renderer;
         function init() {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 30000);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 10000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('three-container').appendChild(renderer.domElement);
-            const starGeo = new THREE.BufferGeometry();
-            const starPos = [];
-            for(let i=0; i<15000; i++) starPos.push((Math.random()-0.5)*15000, (Math.random()-0.5)*15000, (Math.random()-0.5)*15000);
-            starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
-            scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.8})));
-            camera.position.set(0, 300, 1200);
+            
+            camera.position.set(0, 150, 600);
             animate();
+            console.log("Bridge V2 Loaded. Wybierz sektor.");
         }
-        function animate() { requestAnimationFrame(animate); renderer.render(scene, camera); }
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
         window.onload = init;
+
+        function changeSector(id) {
+            document.getElementById('logs').innerHTML += `<br>> Przeskok: ${id.toUpperCase()}...`;
+            // Tutaj warmia_module.js i sector_data.js wykonują magię ładowania terenu
+        }
     </script>
 </body>
 </html>
