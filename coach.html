@@ -2,103 +2,68 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>COPERNIX | LUNA COACH v2.0 PLATINUM</title>
+    <title>COPERNIX | SYSTEM BEHAWIORALNY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); }
-        .breath-circle { width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, #00d4ff, #667eea); animation: breathe 8s infinite ease-in-out; }
-        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.3); opacity: 1; } }
-        .emergency-btn { background: #ff4757; box-shadow: 0 0 30px rgba(255, 71, 87, 0.5); transition: all 0.3s; }
-        .emergency-btn:hover { background: #ff6b81; transform: scale(1.1); }
+        body { background: #020617; color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
+        .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(139, 92, 246, 0.4); }
+        #breathing-circle { width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); opacity: 0.3; border: 2px solid rgba(139, 92, 246, 0.3); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-6">
-    <div class="glass p-12 w-full max-w-4xl rounded-3xl text-center relative">
-        <h1 class="text-6xl font-black italic mb-4">LUNA COACH</h1>
-        <p class="text-sm opacity-70 mb-10 uppercase tracking-widest">Tryb Regeneracji Systemów v2.0</p>
-        
-        <div id="breath-container" class="flex flex-col items-center justify-center mb-10">
-            <div class="breath-circle mb-6"></div>
-            <h2 id="phase-label" class="text-4xl font-bold mb-4">Przygotowanie...</h2>
-            <p id="timer" class="text-7xl font-black">4:00</p>
-            <p id="instruction" class="text-xl mt-6 italic">Za chwilę rozpoczniemy pętlę oddechową</p>
-        </div>
-        
-        <div class="grid grid-cols-2 gap-4 mt-10">
-            <button onclick="startCycle()" class="px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-white font-bold rounded-2xl uppercase transition-all">
-                ▶️ Start Regeneracji
-            </button>
-            <button onclick="pauseCycle()" class="px-8 py-4 bg-gray-600 hover:bg-gray-500 text-white font-bold rounded-2xl uppercase transition-all">
-                ⏸️ Pauza
-            </button>
-        </div>
-        
-        <button onclick="emergency()" class="emergency-btn w-full mt-8 px-8 py-6 text-white font-bold rounded-2xl uppercase tracking-widest">
-            🔴 EMERGENCY PANIC BUTTON
-        </button>
-        
-        <a href="index.html" class="block mt-8 text-cyan-300 hover:text-cyan-100 underline">← Powrót do Hub</a>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+
+    <div id="panic-overlay" class="fixed inset-0 bg-black z-[100] hidden flex flex-col items-center justify-center">
+        <h1 class="text-6xl font-bold text-cyan-500 uppercase tracking-[1em] animate-pulse">Tryb Ciszy</h1>
+        <p class="text-slate-600 mt-4 italic text-xl">Wygaszono wszystkie bodźce. Czas na oddech...</p>
     </div>
-    
+
+    <header class="mb-12">
+        <h1 id="mission-title" class="text-6xl font-black italic text-purple-500 uppercase tracking-tighter">System Maintenance</h1>
+        <p class="text-slate-400 uppercase tracking-widest text-sm mt-2 font-bold italic">Operator: Dominik // Protokół: Samoregulacja v2</p>
+    </header>
+
+    <div class="relative flex items-center justify-center mb-16">
+        <div id="breathing-circle"></div>
+        <div class="absolute text-8xl font-bold font-mono text-white tracking-tighter" id="timer">00:00</div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+        <button onclick="startMission('REGENERACJA RDZENIA', 240, '#22d3ee')" class="glass p-10 rounded-[3rem] hover:bg-cyan-900/20 transition-all border-l-4 border-cyan-500 group">
+            <h3 class="text-3xl font-bold uppercase text-cyan-400">🔋 Regeneracja</h3>
+            <p class="text-xs opacity-60 mt-1 italic">Wyciszenie i chłodzenie układu (4 min)</p>
+        </button>
+        <button onclick="startMission('DOŁADOWANIE MOCY', 180, '#f59e0b')" class="glass p-10 rounded-[3rem] hover:bg-amber-900/20 transition-all border-l-4 border-amber-500 group">
+            <h3 class="text-3xl font-bold uppercase text-amber-500">⚡ Doładowanie</h3>
+            <p class="text-xs opacity-60 mt-1 italic">Aktywacja focusu przed zadaniem (3 min)</p>
+        </button>
+    </div>
+
+    <div class="mt-16 flex items-center gap-4 opacity-50 justify-center">
+        <span class="px-4 py-2 border border-white rounded font-bold text-sm uppercase">Spacja</span>
+        <p class="text-xs uppercase tracking-widest font-bold text-white italic">Fizyczny bezpiecznik: Natychmiastowe wyciszenie klasy</p>
+    </div>
+
     <script>
-        let cycleActive = false;
-        let currentPhase = 'prepare';
-        let timeLeft = 240; // 4 min regeneracja
-        let timerInterval;
-        
-        function startCycle() {
-            if(cycleActive) return;
-            cycleActive = true;
-            currentPhase = 'regeneration';
-            timeLeft = 240; // 4 minuty (240 sekund)
-            document.getElementById('phase-label').innerText = 'Faza 1: Regeneracja';
-            document.getElementById('instruction').innerText = 'Głębokie, spokojne oddechy. Skupiłam się na odprężeniu...';
-            runTimer();
-        }
-        
-        function pauseCycle() {
-            cycleActive = false;
-            clearInterval(timerInterval);
-            document.getElementById('phase-label').innerText = 'Pauza';
-            document.getElementById('instruction').innerText = 'Kliknij Start, aby wznowić';
-        }
-        
-        function runTimer() {
-            timerInterval = setInterval(() => {
-                if(!cycleActive) return;
-                
-                timeLeft--;
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('timer').innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if(timeLeft <= 0) {
-                    if(currentPhase === 'regeneration') {
-                        currentPhase = 'charging';
-                        timeLeft = 180; // 3 minuty (180 sekund)
-                        document.getElementById('phase-label').innerText = 'Faza 2: Doładowanie';
-                        document.getElementById('instruction').innerText = 'Energia wraca! Przygotuj się na dzień...';
-                    } else {
-                        cycleActive = false;
-                        clearInterval(timerInterval);
-                        document.getElementById('phase-label').innerText = 'Zakończono!';
-                        document.getElementById('instruction').innerText = 'Regeneracja zakończona. 🌟';
-                        document.getElementById('timer').innerText = 'GOTOWE';
-                    }
-                }
+        let interval;
+        function startMission(name, duration, color) {
+            clearInterval(interval);
+            let timeLeft = duration;
+            document.getElementById('mission-title').innerText = name;
+            document.getElementById('mission-title').style.color = color;
+            gsap.to("#breathing-circle", { scale: 1.6, opacity: 0.8, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
+            
+            interval = setInterval(() => {
+                const m = Math.floor(timeLeft / 60); const s = timeLeft % 60;
+                document.getElementById('timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                if(timeLeft-- <= 0) { clearInterval(interval); window.location.href = "index.html"; }
             }, 1000);
         }
-        
-        function emergency() {
-            cycleActive = false;
-            clearInterval(timerInterval);
-            alert('🚨 TRYB AWARYJNY AKTYWNY\n\nNatychmiastowe wsparcie:\n1. Zadzwoń do osoby zaufanej\n2. Zastosuj technikę 5-4-3-2-1\n3. Kontakt: 116 123 (telefon zaufania)');
-            document.getElementById('phase-label').innerText = 'Tryb Awaryjny';
-            document.getElementById('instruction').innerText = 'Jesteś bezpieczny. Oddychaj powoli...';
-        }
+
+        window.addEventListener('keydown', (e) => {
+            if(e.code === "Space") document.getElementById('panic-overlay').classList.toggle('hidden');
+        });
     </script>
 </body>
 </html>
