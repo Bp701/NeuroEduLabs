@@ -6,114 +6,82 @@
     <title>NeuroEduLabs - Technologia dla Wyjątkowych Umysłów</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .hero-bg {
-            background-color: #0f172a;
-            background-image: radial-gradient(#1e293b 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
-        html { scroll-behavior: smooth; }
+        .hero-bg { background-color: #0f172a; background-image: radial-gradient(#1e293b 1px, transparent 1px); background-size: 30px 30px; }
+        .gradient-text { background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased">
 
     <nav class="hero-bg text-white border-b border-slate-800 fixed w-full z-50 top-0">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold tracking-tighter flex items-center gap-2">
-                NeuroEduLabs<span class="text-blue-500">.</span>
-            </div>
-            
-            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-300">
+            <div class="text-2xl font-bold tracking-tighter">NeuroEduLabs<span class="text-blue-500">.</span></div>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-300">
                 <a href="#misja" class="hover:text-white transition">Misja</a>
                 <a href="#narzedzia" class="hover:text-white transition text-blue-400">Narzędzia</a>
-                <a href="#scenariusze" class="hover:text-white transition text-emerald-400">Dla Szkół</a>
                 <a href="#zespol" class="hover:text-white transition">Zespół</a>
-                
-                <a href="mailto:piotr-lunaminicoach@proton.me" class="flex items-center gap-2 px-4 py-2 bg-white text-blue-900 rounded-full text-xs font-bold hover:bg-blue-50 transition shadow-lg border-2 border-transparent hover:border-blue-200">
-                    <i class="fa-solid fa-envelope"></i> Napisz do nas
-                </a>
+                <a href="mailto:piotr-lunaminicoach@proton.me" class="bg-white text-slate-900 px-4 py-2 rounded-full text-xs">Napisz do nas</a>
             </div>
         </div>
     </nav>
 
-    <header id="misja" class="hero-bg text-white pt-32 pb-24 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/2 h-full bg-blue-600/10 blur-3xl rounded-full pointer-events-none"></div>
-
-        <div class="container mx-auto px-6 relative z-10">
+    <header id="misja" class="hero-bg text-white pt-40 pb-24 relative overflow-hidden">
+        <div class="container mx-auto px-6">
             <div class="max-w-4xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 border border-blue-800 text-blue-300 text-xs font-bold tracking-wider uppercase mb-8">
-                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 border border-blue-800 text-blue-300 text-[10px] font-bold tracking-wider uppercase mb-8">
                     Od rodzica dla rodziców
                 </div>
                 <h1 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-                    Budujemy mosty <br>
-                    dla <span class="gradient-text">wyjątkowych umysłów</span>.
+                    Budujemy mosty dla <br><span class="gradient-text">wyjątkowych umysłów</span>.
                 </h1>
-                
-                <p class="text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl">
-                    Jestem tatą 7‑letniego Dominika z niepełnosprawnością ruchową i trudnościami w przetwarzaniu bodźców sensorycznych. Tworzymy ekosystem AI wspierający dzieci ze specjalnymi potrzebami edukacyjnymi (SPE).
+                <p class="text-xl text-slate-400 mb-12 max-w-2xl leading-relaxed">
+                    Jestem tatą 7-letniego Dominika. Tworzymy ekosystem AI wspierający dzieci ze specjalnymi potrzebami edukacyjnymi (SPE).
                 </p>
-                
-                <div class="bg-blue-500/10 border border-blue-500/30 p-6 rounded-2xl mb-10 backdrop-blur-sm">
-                    <p class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4">
-                        <i class="fa-solid fa-shield-halved mr-2"></i> System Titanium Wykryty?
+
+                <div class="bg-blue-600/10 border border-blue-500/30 p-8 rounded-[2.5rem] inline-block text-left backdrop-blur-xl shadow-[0_0_40px_rgba(59,130,246,0.2)]">
+                    <p class="text-blue-400 text-xs font-bold uppercase mb-4 tracking-[0.2em] flex items-center gap-2">
+                        <i class="fa-solid fa-microchip"></i> System Titanium Wykryty?
                     </p>
-                    <a href="http://localhost:8000" target="_blank" class="px-8 py-4 bg-blue-500 hover:bg-blue-400 text-slate-900 rounded-lg font-black transition text-center flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(59,130,246,0.5)]">
-                        ZALOGUJ DO MOSTKA LOKALNEGO (TITANIUM ACCESS)
+                    <a href="http://localhost:8000" target="_blank" 
+                       class="block bg-blue-500 hover:bg-blue-400 text-slate-950 font-black py-5 px-12 rounded-2xl transition-all text-xl shadow-lg transform hover:scale-[1.02]">
+                        ZALOGUJ DO MOSTKA LOKALNEGO
                     </a>
-                    <p class="text-[10px] text-slate-500 mt-4 italic">
-                        Link działa tylko na urządzeniach z zainstalowanym jądrem Copernix Titanium (TRL 7).
+                    <p class="text-[9px] text-slate-500 mt-4 italic uppercase tracking-tighter">
+                        Wymagane uruchomienie jądra Copernix OS (TRL 7 Gold Master)
                     </p>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-4 opacity-50">
-                    <a href="#narzedzia" class="px-8 py-4 bg-slate-800 border border-slate-700 text-white rounded-lg font-bold transition text-center">
-                        Dowiedz się więcej
-                    </a>
                 </div>
             </div>
         </div>
     </header>
 
-    <section id="narzedzia" class="py-20 bg-slate-100">
+    <section id="zespol" class="py-24 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Jeden Ekosystem, Dwa Wymiary</h2>
+                <h2 class="text-3xl font-bold uppercase tracking-widest">Zespół Założycielski</h2>
             </div>
-
-            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div class="bg-white rounded-2xl p-8 shadow-xl border-t-8 border-emerald-500 card-hover transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Luna Junior (V1)</h3>
-                    <p class="text-slate-600 mb-6">Interfejs "Audio-First" dla przedszkolaków.</p>
-                    <a href="https://luna-minicoach-bp701.onrender.com/" class="block w-full py-4 bg-emerald-600 text-white font-bold text-center rounded-xl">Demo V1</a>
+            <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+                <div class="text-center p-8 bg-slate-50 rounded-3xl border border-slate-100 card-hover transition">
+                    <div class="text-5xl mb-4">👩‍💼</div>
+                    <h3 class="text-xl font-bold">Marta Dąbrowska</h3>
+                    <p class="text-blue-600 text-xs font-bold mb-4 uppercase">CEO & Head of Education</p>
+                    <p class="text-slate-500 text-sm">Metodyka i koordynacja placówek. Certyfikowany Opiekun Dziecięcy (280h).</p>
                 </div>
-
-                <div class="bg-white rounded-2xl p-8 shadow-xl border-t-8 border-blue-600 card-hover transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Luna Mini Coach (V2)</h3>
-                    <p class="text-slate-600 mb-6">Zaawansowana grywalizacja dla szkół.</p>
-                    <a href="https://lunaminicoach-v2.onrender.com/" class="block w-full py-4 bg-blue-600 text-white font-bold text-center rounded-xl">Demo V2</a>
+                <div class="text-center p-8 bg-slate-50 rounded-3xl border border-slate-100 card-hover transition">
+                    <div class="text-5xl mb-4">👨‍💻</div>
+                    <h3 class="text-xl font-bold">Piotr Brodziński</h3>
+                    <p class="text-blue-600 text-xs font-bold mb-4 uppercase">CTO & Lead Architect</p>
+                    <p class="text-slate-500 text-sm">Architektura Local AI, rozwój technologii Luna i Copernix OS.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="hero-bg text-slate-400 py-12 border-t border-slate-800">
-        <div class="container mx-auto px-6 text-center text-xs">
-            <p>&copy; 2026 Piotr Brodziński | NeuroEduLabs. TRL 7 Gold Master Edition.</p>
-        </div>
+    <footer class="hero-bg text-slate-500 py-12 border-t border-slate-800 text-center text-[10px] uppercase tracking-widest font-bold">
+        <p>© 2026 Piotr Brodziński | NeuroEduLabs. TRL 7 Gold Master Edition.</p>
     </footer>
+
 </body>
 </html>
